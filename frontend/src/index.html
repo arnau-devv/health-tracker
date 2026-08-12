@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi App</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="components/sports/strength_training/strength_training.css">
+    <link rel="stylesheet" href="components/sports/strength_training/exercise_creator/exercise_creator.css">
+    <link rel="stylesheet" href="components/sports/strength_training/routine_creator/routine_creator.css">
+
+</head>
+
+<body spellcheck="false">
+    <div class="draggable_area"></div>
+    <!-------- SIDEBAR -------->
+    <div class="sidebar">
+        <!-- close app -->
+        <div class="window-controls">
+            <button id="close_app_btn" class="win-btn win-btn-close"></button>
+            <button id="minimize_window_btn" class="win-btn win-btn-minimize"></button>
+            <button id="ajust_window_btn" class="win-btn win-btn-resize"></button>
+        </div>
+        
+        <!-- SIDEBAR content -->
+        <div class="sidebar_content">
+            <!-- Seleccionable Modules/Views-->
+            <div class="sidebar_modules">
+                <button class="sidebar_module" id="module1_btn"><img class="sidebar_module_icon" src="../assets/images/t.png"></button>
+                <button class="sidebar_module" id="module2_btn"><img class="sidebar_module_icon" src="../assets/images/z.png"></button>
+                <button class="sidebar_module" id="module3_btn"><img class="sidebar_module_icon" src="../assets/images/x.png"></button>
+                <button class="sidebar_module" id="module4_btn"><img class="sidebar_module_icon" src="../assets/images/y.png"></button>
+                <div class="sidebar_module" id="sports_module_btn" role="button">
+                        <img class="sidebar_module_icon sport-sidebar-icon" src="../assets/images/sports-sidebar-icon.png">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 21C11.2 21 10.5 20.6 10.1 20L2.1 7.5C1.2 6.1 2.1 4.5 3.7 4.5H20.3C21.9 4.5 22.8 6.1 21.9 7.5L13.9 20C13.5 20.6 12.8 21 12 21Z" fill="white" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    <button class="sport-module strength_training_module" id="strength-training-module-btn"><img class="sport-icon" src="../assets/images/weightlifting-module-icon.png"></button>
+                    <button class="sport-module running_module" id="running-module-btn"><img class="sport-icon" src="../assets/images/running-sports-sidebar-iconn.png"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ALL MAIN VIEWS (SPORTS, GENERAL HEALTHCARE, ALIMENTATIONS....)-->
+    <div class="main_window">
+        <!-- SPORTS -->
+        <div class="module-view strength_training_view" id="strength_training_view">
+                <h1>Sports View</h1>
+                <button id="exercise_creation_view_toggle">exercise creator</button>
+                <button id="routine_creation_view_toggle">routine creator</button>
+        </div>
+    </div>
+
+    <!-- LATERAL WINDOW HELPERS -> Contains different views from various modules -->
+    <!-- Exercise Creator -->
+    <div class="lateral_window_helper exercise_creator_view" id="exercise_creator_view">
+        <label for="exercise_name_input" class="exercise_name_label">Exercise name</label>
+        <input type="text"  class="exercise_name_input" id="exercise_name_input" name="exercise_name" placeholder="Ex: Bench Press">
+
+        <!-- Muscle Selector -->
+        <div class="exercise_creator_muscle_slector">
+            <h3 class="exercise_creator_muscle_selector_title">Muscles Involved </h3>
+            <p class="exercise_creator_muscle_selector_subtitle">Set each muscle's involvement</p>
+            <div class="muscle_selector_container">
+                
+                <!-- Push Muscles -->
+                    <div class="muscles_selector push_muscles_selector">
+                        <p class="muscles_selector_tittle push_muscles_selector_tittle">Push Muscles <span class="muscles_selected">0</span></p>
+                        <div class="muscles_selector_buttons push_muscles_selector_buttons">
+                            <button class="muscle_selector_button" id="chest_muscle_btn">
+                                <div class="muscle_name_info">
+                                    Chest
+                                    <span class="muscle_involucration_label">
+                                        <span class="muscle_involucration_value"></span>
+                                    </span>
+                                </div>
+                            <div class="muscle_inv">
+                                <div class="muscle_inv_track">
+                                    <div class="muscle_inv_fill"></div>
+                                    <div class="muscle_inv_handle"></div>
+                                </div>
+                            </div>
+                        </button>
+                        <button class="muscle_selector_button" id="anterior_shoulder_muscle_btn">
+                            <div class="muscle_name_info">
+                                Anterior deltoid
+                                <span class="muscle_involucration_label">
+                                    <span class="muscle_involucration_value">0%</span>
+                                </span>
+                            </div>
+                            <div class="muscle_inv">
+                                <div class="muscle_inv_track">
+                                    <div class="muscle_inv_fill"></div>
+                                    <div class="muscle_inv_handle"></div>
+                                </div>
+                            </div>
+                        </button>
+                        <button class="muscle_selector_button" id="lateral_shoulder_muscle_btn">
+                            <div class="muscle_name_info">
+                                Lateral deltoid
+                                <span class="muscle_involucration_label">
+                                    <span class="muscle_involucration_value">0%</span>
+                                </span>
+                            </div>
+                            <div class="muscle_inv">
+                                <div class="muscle_inv_track">
+                                    <div class="muscle_inv_fill"></div>
+                                    <div class="muscle_inv_handle"></div>
+                                </div>
+                            </div>
+                        </button>
+                        <button class="muscle_selector_button" id="triceps_muscle_btn">
+                            <div class="muscle_name_info">
+                                Triceps
+                                <span class="muscle_involucration_label">
+                                    <span class="muscle_involucration_value">0%</span>
+                                </span>
+                            </div>
+                            <div class="muscle_inv">
+                                <div class="muscle_inv_track">
+                                    <div class="muscle_inv_fill"></div>
+                                    <div class="muscle_inv_handle"></div>
+                                </div>
+                            </div>
+                        </button>
+                        <button class="muscle_selector_button" id="forearm_extensors_muscle_btn">
+                            <div class="muscle_name_info">
+                                Forearm extensors
+                                <span class="muscle_involucration_label">
+                                    <span class="muscle_involucration_value">0%</span>
+                                </span>
+                            </div>
+                            <div class="muscle_inv">
+                                <div class="muscle_inv_track">
+                                    <div class="muscle_inv_fill"></div>
+                                    <div class="muscle_inv_handle"></div>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Pull Muscles -->
+                <div class="muscles_selector pull_muscles_selector">
+                    <p class="muscles_selector_tittle pull_muscles_selector_tittle">Pull Muscles <span class="muscles_selected">0</span></p>
+                    <div class="muscles_selector_buttons pull_muscles_selector_buttons">
+                        <button class="muscle_selector_button" id="lats_muscle_btn">
+                            <div class="muscle_name_info">
+                                Lats
+                                <span class="muscle_involucration_label">
+                                    <span class="muscle_involucration_value">0%</span>
+                                </span>
+                            </div>
+                            <div class="muscle_inv">
+                                <div class="muscle_inv_track">
+                                    <div class="muscle_inv_fill"></div>
+                                    <div class="muscle_inv_handle"></div>
+                                </div>
+                            </div>
+                        </button>
+                        <button class="muscle_selector_button" id="upper_back_muscle_btn">
+                            <div class="muscle_name_info">
+                                Upper back
+                                <span class="muscle_involucration_label">
+                                    <span class="muscle_involucration_value">0%</span>
+                                </span>
+                            </div>
+                            <div class="muscle_inv">
+                                <div class="muscle_inv_track">
+                                    <div class="muscle_inv_fill"></div>
+                                    <div class="muscle_inv_handle"></div>
+                                </div>
+                            </div>
+                        </button>
+                        <button class="muscle_selector_button" id="rear_deltoid_muscle_btn">
+                            <div class="muscle_name_info">
+                                Rear deltoid
+                                <span class="muscle_involucration_label">
+                                    <span class="muscle_involucration_value">0%</span>
+                                </span>
+                            </div>
+                            <div class="muscle_inv">
+                                <div class="muscle_inv_track">
+                                    <div class="muscle_inv_fill"></div>
+                                    <div class="muscle_inv_handle"></div>
+                                </div>
+                            </div>
+                        </button>
+                        <button class="muscle_selector_button" id="biceps_muscle_btn">
+                            <div class="muscle_name_info">
+                                Biceps
+                                <span class="muscle_involucration_label">
+                                    <span class="muscle_involucration_value">0%</span>
+                                </span>
+                            </div>
+                            <div class="muscle_inv">
+                                <div class="muscle_inv_track">
+                                    <div class="muscle_inv_fill"></div>
+                                    <div class="muscle_inv_handle"></div>
+                                </div>
+                            </div>
+                        </button>
+                        <button class="muscle_selector_button" id="forearm_flexors_muscle_btn">
+                            <div class="muscle_name_info">
+                                Forearm flexors
+                                <span class="muscle_involucration_label">
+                                    <span class="muscle_involucration_value">0%</span>
+                                </span>
+                            </div>
+                            <div class="muscle_inv">
+                                <div class="muscle_inv_track">
+                                    <div class="muscle_inv_fill"></div>
+                                    <div class="muscle_inv_handle"></div>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Legs / Lower Body Muscles -->
+                <div class="muscles_selector legs_muscles_selector">
+                    <p class="muscles_selector_tittle legs_muscles_selector_tittle">Legs Muscles <span class="muscles_selected">0</span></p>
+                    <div class="muscles_selector_buttons legs_muscles_selector_buttons">
+                        <button class="muscle_selector_button" id="quadriceps_muscle_btn">
+                            <div class="muscle_name_info">
+                                Quadriceps
+                                <span class="muscle_involucration_label">
+                                    <span class="muscle_involucration_value">0%</span>
+                                </span>
+                            </div>
+                            <div class="muscle_inv">
+                                <div class="muscle_inv_track">
+                                    <div class="muscle_inv_fill"></div>
+                                    <div class="muscle_inv_handle"></div>
+                                </div>
+                            </div>
+                        </button>
+                        <button class="muscle_selector_button" id="hamstrings_muscle_btn">
+                            <div class="muscle_name_info">
+                                Hamstrings
+                                <span class="muscle_involucration_label">
+                                    <span class="muscle_involucration_value">0%</span>
+                                </span>
+                            </div>
+                            <div class="muscle_inv">
+                                <div class="muscle_inv_track">
+                                    <div class="muscle_inv_fill"></div>
+                                    <div class="muscle_inv_handle"></div>
+                                </div>
+                            </div>
+                        </button>
+                        <button class="muscle_selector_button" id="glutes_muscle_btn">
+                            <div class="muscle_name_info">
+                                Glutes
+                                <span class="muscle_involucration_label">
+                                    <span class="muscle_involucration_value">0%</span>
+                                </span>
+                            </div>
+                            <div class="muscle_inv">
+                                <div class="muscle_inv_track">
+                                    <div class="muscle_inv_fill"></div>
+                                    <div class="muscle_inv_handle"></div>
+                                </div>
+                            </div>
+                        </button>
+                        <button class="muscle_selector_button" id="calves_muscle_btn">
+                            <div class="muscle_name_info">
+                                Calves
+                                <span class="muscle_involucration_label">
+                                    <span class="muscle_involucration_value">0%</span>
+                                </span>
+                            </div>
+                            <div class="muscle_inv">
+                                <div class="muscle_inv_track">
+                                    <div class="muscle_inv_fill"></div>
+                                    <div class="muscle_inv_handle"></div>
+                                </div>
+                            </div>
+                        </button>
+                        <button class="muscle_selector_button" id="adductors_muscle_btn">
+                            <div class="muscle_name_info">
+                                Adductors
+                                <span class="muscle_involucration_label">
+                                    <span class="muscle_involucration_value">0%</span>
+                                </span>
+                            </div>
+                            <div class="muscle_inv">
+                                <div class="muscle_inv_track">
+                                    <div class="muscle_inv_fill"></div>
+                                    <div class="muscle_inv_handle"></div>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Core Muscles -->
+                <div class="muscles_selector core_muscles_selector">
+                    <p class="muscles_selector_tittle core_muscles_selector_tittle">Core Muscles <span class="muscles_selected">0</span></p>
+                    <div class="muscles_selector_buttons core_muscles_selector_buttons">
+                        <button class="muscle_selector_button" id="rectus_abdominis_muscle_btn">
+                            <div class="muscle_name_info">
+                                Rectus abdominis
+                                <span class="muscle_involucration_label">
+                                    <span class="muscle_involucration_value">0%</span>
+                                </span>
+                            </div>
+                            <div class="muscle_inv">
+                                <div class="muscle_inv_track">
+                                    <div class="muscle_inv_fill"></div>
+                                    <div class="muscle_inv_handle"></div>
+                                </div>
+                            </div>
+                        </button>
+                        <button class="muscle_selector_button" id="obliques_muscle_btn">
+                            <div class="muscle_name_info">
+                                Obliques
+                                <span class="muscle_involucration_label">
+                                    <span class="muscle_involucration_value">0%</span>
+                                </span>
+                            </div>
+                            <div class="muscle_inv">
+                                <div class="muscle_inv_track">
+                                    <div class="muscle_inv_fill"></div>
+                                    <div class="muscle_inv_handle"></div>
+                                </div>
+                            </div>
+                        </button>
+                        <button class="muscle_selector_button" id="lower_back_muscle_btn">
+                            <div class="muscle_name_info">
+                                Lower back
+                                <span class="muscle_involucration_label">
+                                    <span class="muscle_involucration_value">0%</span>
+                                </span>
+                            </div>
+                            <div class="muscle_inv">
+                                <div class="muscle_inv_track">
+                                    <div class="muscle_inv_fill"></div>
+                                    <div class="muscle_inv_handle"></div>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button id="save_exercise_btn">Save Exercise</button>
+    </div>
+
+    <div class="lateral_window_helper routine_creator_view" id="routine_creator_view">routine creator</div>
+
+
+    <script src="index.js"></script>
+    <script src="components/sports/strength_training/strength_training.js"></script>
+    <script src="components/sports/strength_training/exercise_creator/exercise_creator.js"></script>
+    <script src="components/sports/strength_training/routine_creator/routine_creator.js"></script>
+</body>
+</html>

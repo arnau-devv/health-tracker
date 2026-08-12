@@ -1,0 +1,5 @@
+/* =================== SPORTS VIEW =================== */
+.strength_training_view.active {
+    display: flex;
+}
+

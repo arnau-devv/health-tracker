@@ -1,0 +1,456 @@
+/* =================== EXERCISE CREATOR (Window Helper View) =================== */
+#exercise_creation_view_toggle {
+    height: 20px;
+    margin-top: 100px;
+}
+
+.exercise_creator_view {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    margin-left: 0px;
+    border-radius: 8px;
+    background: rgba(20, 20, 20, 0.5);
+    box-sizing: border-box;
+    height: 100%;
+    width: 0px;
+    padding: 20px 0px 20px 0px;
+    gap: 0px;
+    flex-shrink: 0;
+    overflow: hidden;
+    transition: width 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+        margin-left 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+        padding 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.exercise_creator_view.active {
+    width: 250px;
+    /* min-width: 250px; */
+    margin-left: 7px;
+    padding: 20px 10px 20px 10px;
+    gap: 6px;
+}
+@media (max-width: 600px) {
+    .exercise_creator_view.active {
+        width: 0px;
+        margin-left: 0px;
+        padding: 20px 0px 20px 0px;
+        gap: 0px;
+    }
+}
+
+/* ============ EXERCISE NAME INPUT ============ */
+.exercise_name_label {
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    text-align: left;
+    margin-left: 3px;
+    width: 100%;
+    color: rgba(255, 255, 255, 0.4);
+    white-space: nowrap;
+}
+
+#exercise_name_input {
+    background: rgba(255, 255, 255, 0.05);    
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 5px;
+    width: 100%;
+    height: 30px;
+    padding: 0px 14px;
+    color: white;
+    font-size: 14px;
+    outline: none;
+    box-shadow:
+        inset 0 1px 3px rgba(0, 0, 0, 0.4),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.04),
+        0 1px 0 rgba(255, 255, 255, 0.03);
+    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    flex-shrink: 0;
+}
+
+#exercise_name_input.not_valid {
+    border-color: #ff4d4d !important;
+    background: rgba(255, 77, 77, 0.08) !important;
+    box-shadow: 
+        inset 0 1px 3px rgba(0, 0, 0, 0.4),
+        inset 0 -1px 0 rgba(255, 77, 77, 0.04),
+        0 0 8px rgba(255, 77, 77, 0.4) !important;
+}
+#exercise_name_input::placeholder {
+    color: rgba(255, 255, 255, 0.25);
+    font-size: 12px;
+    font-weight: 300;
+}
+
+#exercise_name_input:hover {
+    border-color: rgba(255, 255, 255, 0.14);
+    box-shadow:
+        inset 0 1px 3px rgba(0, 0, 0, 0.45),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.05),
+        0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+#exercise_name_input:focus {
+    border-color: rgba(255, 255, 255, 0.22);
+    box-shadow:
+        inset 0 1px 3px rgba(0, 0, 0, 0.45),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.06),
+        0 0 0 3px rgba(255, 255, 255, 0.05);
+}
+
+
+/* ============ MUSCLES SELECTOR ============ */
+/* ============ PUSH MUSCLES SELECTOR ============ */
+.exercise_creator_muscle_slector {
+    width: 100%;
+    margin-top: 12px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+
+    flex: 1 1 auto;
+    min-height: 0;
+
+    /* ya no hace scroll aquí */
+    overflow: hidden;
+}
+
+.muscle_selector_container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+
+    flex: 1 1 auto;
+    min-height: 0;
+
+    /* por defecto (ventana alta): sin scroll, se comprimen los selectores */
+    overflow: hidden;
+}
+
+.muscle_selector_container::-webkit-scrollbar { width: 3px; }
+.muscle_selector_container::-webkit-scrollbar-track { background: transparent; }
+.muscle_selector_container::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 3px;
+}
+.muscle_selector_container::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.muscles_selector_tittle {
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 8px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    width: 100%;
+    padding: 4px 10px;   /* antes: 5px 10px 3px 10px */
+    background: rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.exercise_creator_muscle_selector_title {
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.4);
+    margin: 0 0 7px 3px; /* el gap que antes daba el padre, ahora un margin-bottom */
+    padding: 0;
+    flex-shrink: 0; /* nunca se comprime ni se scrollea */
+}
+
+.muscles_selected {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    color: rgba(255, 255, 255, 0.4);
+    transition: color 0.15s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 20px;
+    height: 15px;
+    padding: 1px 6px 0px 6px;
+    margin-bottom: 2zpx;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.06);
+    flex-shrink: 0;
+}
+
+.exercise_creator_muscle_selector_subtitle {
+    font-size: 9px;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.3);
+    margin: -6px 0 10px 3px;
+    padding: 0;
+    flex-shrink: 0;
+}
+.muscles_selector {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    justify-content: flex-start;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow:
+        inset 0 1px 3px rgba(0, 0, 0, 0.3),
+        0 1px 0 rgba(255, 255, 255, 0.03);
+    overflow: hidden;
+
+    /* por defecto (ventana alta): se reparten el espacio y se comprimen juntos */
+    flex: 1 1 0;
+    min-height: 0;
+    max-height: 205px;
+}
+
+/* -------- VENTANA BAJA: se invierte el comportamiento -------- */
+@media (max-height: 650px) {
+    .muscle_selector_container {
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .muscles_selector {
+        flex: 0 0 auto; /* tamaño natural, deja de comprimirse */
+    }
+}
+
+.muscles_selector_tittle {
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 8px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    width: 100%;
+    padding: 5px 10px 3px 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    box-sizing: border-box;
+}
+
+.muscles_selector_buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    width: 100%;
+    gap: 4px;
+    padding: 6px;
+    box-sizing: border-box;
+    /* eliminado: overflow-y: auto; */
+    overflow-x: hidden;
+}
+.core_muscles_selector {
+    max-height: 135px;
+}
+
+.muscles_selector_buttons::-webkit-scrollbar { width: 3px; }
+.muscles_selector_buttons::-webkit-scrollbar-track { background: transparent; }
+.muscles_selector_buttons::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.2); }
+.muscles_selector_buttons::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 3px;
+}
+
+.muscle_selector_button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: left;
+    border-radius: 5px;
+    padding: 0px;
+    background: transparent;
+    border: 1px solid transparent;
+    background: rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+    flex-shrink: 0;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 10px;
+    height: 30px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.muscle_name_info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+    width: 100%;
+    height: 30px;
+    box-sizing: border-box;
+    flex-shrink: 0;
+    /* border: 1px solid red; */
+    margin: 0;
+}
+/* .muscle_inv {
+    width: 100%;
+    height: 100%;
+    border: 1px solid green;
+} */
+
+.muscle_involucration_label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 30px;
+    height: 16px;
+    padding: 0 6px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.06);
+    flex-shrink: 0;
+}
+
+.muscle_involucration_value {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    color: rgba(120, 220, 130, 0.9); /* verde por defecto */
+    transition: color 0.15s ease;
+}
+
+.muscle_involucration_value.is-zero {
+    color: rgba(255, 100, 100, 0.9); /* rojo cuando es 0% */
+}
+
+.muscle_selector_button:hover {
+    background: rgba(0, 0, 0, 0.15);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.muscle_selector_button:active {
+    background: rgba(0, 0, 0, 0.25);
+    transform: scale(0.98);
+}
+.muscle_selector_button.open {
+    height: 60px;
+}
+
+/* =========== MSUCLE INVOLUCRATION BAR ========== */
+.muscle_inv {
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+    box-sizing: border-box;
+    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.muscle_selector_button.open .muscle_inv {
+    opacity: 1;
+}
+
+.muscle_inv_track {
+    position: relative;
+    width: 95%;
+    height: 4px;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+.muscle_inv_fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.5);
+    width: 0%; /* valor de ejemplo, luego lo pondrá el JS dinámicamente */
+    transition: width 0.15s ease;
+}
+
+.muscle_inv_handle {
+    position: absolute;
+    top: 50%;
+    left: 0%; /* debe coincidir con el % de .muscle_inv_fill */
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: white;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    transition: left 0.15s ease, transform 0.15s ease;
+}
+
+.muscle_inv_handle:hover {
+    transform: translate(-50%, -50%) scale(1.2);
+}
+
+
+
+
+
+
+/* ------- SAVE EXERCISE BTN ------- */
+#save_exercise_btn {
+    position: static;      /* antes: absolute; bottom: 5px */
+    flex-shrink: 0;         /* que nunca se encoja, mantiene su tamaño fijo */
+    width: 100%;            /* antes: 92% (compensaba el padding lateral del absolute) */
+    margin-top: 6px;        /* pequeño respiro respecto al selector, opcional */
+    display: flex;          /* recuerda quitar el display:none si sigue puesto en el otro archivo */
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    height: 30px;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.05);    
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 0px 14px;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 14px;
+    outline: none;
+    cursor: pointer;
+    box-shadow:
+        inset 0 1px 3px rgba(0, 0, 0, 0.4),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.04),
+        0 1px 0 rgba(255, 255, 255, 0.03);
+    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+#save_exercise_btn:hover {
+    color: rgba(255, 255, 255, 0.57);
+    background: rgba(255, 255, 255, 0.09);
+    border-color: rgba(255, 255, 255, 0.16);
+    box-shadow:
+        inset 0 1px 3px rgba(0, 0, 0, 0.45),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.05),
+        0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+#save_exercise_btn:active {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.1);
+    transform: scale(0.98);
+    box-shadow:
+        inset 0 1px 4px rgba(0, 0, 0, 0.5),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.03);
+}
+
+#save_exercise_btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none; /* bloquea hover/active mientras está desactivado */
+}
