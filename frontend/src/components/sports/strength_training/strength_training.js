@@ -35,3 +35,48 @@ routineCreationViewBtn.addEventListener('click', () => {
     if (exerciseCreatorView.classList.contains('active')) closeInstantly(exerciseCreatorView);
     routineCreatorView.classList.toggle('active');
 });
+
+
+// ============================================================================================
+//                          STRENGTH TRAINING — INTERNAL VIEWS
+// ============================================================================================
+
+const strengthTrainingMainViewBtn = document.getElementById('strength_training_main_view_btn');
+const strengthTrainingAddWorkoutBtn = document.getElementById('strength_training_add_workout_view_btn');
+
+const strengthTrainingMainView = document.getElementById('strength_training_main_subview');
+const strengthTrainingAddWorkoutView = document.getElementById('strength_training_add_workout_subview');
+
+const mainTitle = document.querySelector('.strength_training_main_tittle');
+function changeTitleAnimated(newText, directionClass) {
+    if (mainTitle.textContent === newText) return;
+
+    mainTitle.classList.add(directionClass);
+
+    setTimeout(() => {
+        mainTitle.textContent = newText;
+        mainTitle.classList.remove(directionClass);
+    }, 300); 
+}
+
+// --- EVENTOS ---
+
+strengthTrainingMainViewBtn.addEventListener('click', () => {
+    strengthTrainingAddWorkoutBtn.classList.remove('selected');
+    strengthTrainingMainViewBtn.classList.add('selected');
+
+    strengthTrainingMainView.style.transform = 'translateX(0%)';
+    strengthTrainingAddWorkoutView.style.transform = 'translateX(0%)';
+
+    changeTitleAnimated('Strength Training', 'slide-right');
+});
+
+strengthTrainingAddWorkoutBtn.addEventListener('click', () => {
+    strengthTrainingAddWorkoutBtn.classList.add('selected');
+    strengthTrainingMainViewBtn.classList.remove('selected');
+
+    strengthTrainingMainView.style.transform = 'translateX(-100%)';
+    strengthTrainingAddWorkoutView.style.transform = 'translateX(-100%)';
+
+    changeTitleAnimated('New Workout', 'slide-left');
+});

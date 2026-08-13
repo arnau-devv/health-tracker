@@ -1,8 +1,11 @@
 /* =================== ROUTINE CREATOR (Window Helper View) =================== */
 #routine_creation_view_toggle {
+    position: absolute;
+    width: 50px;
+    top: 20px;
+    right: 300px;
+    display: none;
     height: 20px;
-    margin-top: 100px;
-    margin-left: 50px;
 }
 
 .routine_creator_view {

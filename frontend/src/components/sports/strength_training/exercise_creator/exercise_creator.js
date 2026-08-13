@@ -1,6 +1,8 @@
-// ============================================================================================
-//                          SAVE EXERCISE (declared first, used later in this file)
-// ============================================================================================
+// ==============================================================================================================
+//                                      EXERCISE CREATOR (Window Helper View)
+// ================================================================================================================
+
+// ======================= SAVE EXERCISE (declared first, used later in this file)
 const saveExerciseBtn = document.getElementById('save_exercise_btn');
 const nameInput = document.getElementById('exercise_name_input');
 
@@ -12,14 +14,33 @@ function updateSaveButtonState() {
     saveExerciseBtn.disabled = !(hasName && hasMuscles);
 }
 
-
-// ============================================================================
-//                          EXERCISE CREATOR (Window Helper View)
-// ============================================================================
 // ================= MUSCLE SELECTOR
+const titles = document.querySelectorAll('.muscles_selector_tittle');
+
+titles.forEach(title => {
+    title.addEventListener('click', () => {
+        // Busca el contenedor padre .muscles_selector más cercano y le conmuta 'open'
+        const parent = title.closest('.muscles_selector');
+        parent.classList.toggle('open');
+    });
+});
+
 document.querySelectorAll('.muscle_selector_button').forEach(btn => {
     btn.addEventListener('click', () => { btn.classList.toggle('open') })
 })
+
+// --- MUSCLE SELECTOR CONTAINER — SIZE WATCHER
+const muscleSelectorContainer = document.querySelector('.muscle_selector_container')
+const resizeObserver = new ResizeObserver(entries => {
+    for (const entry of entries) {
+        const height = entry.contentRect.height
+
+        if (height > 340) muscleSelectorContainer.classList.add('is-tall')
+        else muscleSelectorContainer.classList.remove('is-tall')
+    }
+})
+
+resizeObserver.observe(muscleSelectorContainer)
 
 // ================= MUSCLE INVOLVEMENT SLIDER =================
 function updateGroupCount(anyBtnInGroup) {

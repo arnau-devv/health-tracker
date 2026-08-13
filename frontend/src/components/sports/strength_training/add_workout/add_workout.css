@@ -1,0 +1,197 @@
+.strength_training_add_workout_subview { 
+    /* border: 1px solid rgba(0, 8, 255, 0.526); */
+    border-radius: 5px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    /* border: 1px solid rgba(255, 0, 0, 0.126); */
+    gap: 8px;
+
+    width: 100%;
+    height: 100%;
+    /* 🔴 CAMBIOS IMPORTANTES AQUÍ 🔴 */
+    flex-shrink: 0; /* Evita que las vistas se encojan, obligando a que cada una mida 100% */
+    transition: transform 0.4s ease-in-out; /* Esta es la magia de la animación (0.4 segundos) */
+}
+
+/* -------------- WORKOUT EXERCISE MANAGER ---------- */
+.exercice_manager_container {
+    width: 70%;
+    flex-shrink: 0;
+    height: 100%;
+    background: #181818;
+    border-radius: 3px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 8px;
+    gap: 8px;
+    overflow: hidden;
+    border: 2px dashed  #37363698;
+}
+
+/* -------------- Saved Exercices List */
+#exercise_creation_view_toggle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 2.5px;
+    padding: 0px;
+    background: #2d2d2d;
+    text-align: center;
+    border: none;
+    flex-shrink: 0;
+    color: #bbbbbb;
+    font-size: 20px;
+    font-weight: 700;
+    padding-left: 12px;
+    height: 30px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    margin-bottom: 10px;
+}
+
+.saved_exercises_list {
+    background: #202020;
+    border-radius: 3px;
+    padding: 5px;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    gap: 5px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    overflow-x: hidden;
+    overflow-y: auto;
+    /* border: 1px solid yellow; */
+    min-height: 300px;
+}
+
+.saved_exercises_list::-webkit-scrollbar { width: 3px; }
+.saved_exercises_list::-webkit-scrollbar-track { background: transparent; }
+.saved_exercises_list::-webkit-scrollbar-thumb:hover { background: #4a4a4a; }
+.saved_exercises_list::-webkit-scrollbar-thumb { background: #3a3a3a; border-radius: 3px; }
+
+
+.exercises_list {
+    width: 100%;
+    padding: 0px 5px 5px 5px;
+    box-sizing: border-box;
+    border-radius: 3px;
+    display: flex;
+    height: 25px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    overflow: hidden;
+    background: #181818;
+    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.exercises_list_tittle {
+    width: 100%;
+    border-radius: 3px;
+    height: 20px;
+    color: #7a7a7a;
+    font-size: 8px;
+    /* border: 1px solid red; */
+    padding: 13px 0px 11px 3px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    text-transform: uppercase;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.exercises_list_items {
+    width: 100%;
+    height: 100%;
+    margin-top: 3px;
+    /* border: 1px solid salmon; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 4px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+.exercises_list_items::-webkit-scrollbar { width: 3px; }
+.exercises_list_items::-webkit-scrollbar-track { background: transparent; }
+.exercises_list_items::-webkit-scrollbar-thumb:hover { background: #4a4a4a; }
+.exercises_list_items::-webkit-scrollbar-thumb { background: #3a3a3a; border-radius: 3px; }
+
+.exercise_list_item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 2.5px;
+    padding: 0px;
+    background: #202020;
+    text-align: left;
+    border: none;
+    overflow: hidden;
+    flex-shrink: 0;
+    color: #bbbbbb;
+    font-size: 10px;
+    padding-left: 12px;
+    height: 30px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.exercise_list_item:hover {
+    background: #292929;
+    border-color: #3a3a3a;
+    color: #ffffff;
+}
+
+.exercise_list_item:active {
+    background: #202020;
+    transform: scale(0.98);
+}
+
+/* ----------- Selected Exercices Manager */
+.selected_exercices_manager {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    background: #202020;;
+    border-radius: 3px;
+    padding: 5px;
+    position: relative;
+    width: 50%;
+    height: 100%;
+}
+
+.selected_exercices_manager_bg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.exercises_list.open {
+    height: 100px;
+}
+
+/* -------------- WORKOUT DETAILS ---------- */
+.workout_details_container {
+    height: 100%;
+    width: 100%;
+    background: #202020;
+    border-radius: 3px;
+}

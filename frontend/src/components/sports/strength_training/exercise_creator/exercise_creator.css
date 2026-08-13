@@ -1,9 +1,4 @@
 /* =================== EXERCISE CREATOR (Window Helper View) =================== */
-#exercise_creation_view_toggle {
-    height: 20px;
-    margin-top: 100px;
-}
-
 .exercise_creator_view {
     position: relative;
     display: flex;
@@ -11,27 +6,30 @@
     align-items: stretch;
     justify-content: flex-start;
     margin-left: 0px;
-    border-radius: 8px;
-    background: rgba(20, 20, 20, 0.5);
+    border-radius: 5px;
+    background: #141414;
     box-sizing: border-box;
     height: 100%;
     width: 0px;
-    padding: 20px 0px 20px 0px;
+    padding: 15px 0px 20px 0px;
     gap: 0px;
     flex-shrink: 0;
     overflow: hidden;
     transition: width 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
         margin-left 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
         padding 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    /* border: 1px solid rgba(255, 0, 0, 0.601); */
 }
 
 .exercise_creator_view.active {
     width: 250px;
-    /* min-width: 250px; */
-    margin-left: 7px;
-    padding: 20px 10px 20px 10px;
+    margin-left: 5px;
+    /* border-top-left-radius: 12px; */
+    /* border-bottom-left-radius: 12px; */
+    padding: 10px 10px 10px 10px;
     gap: 6px;
 }
+
 @media (max-width: 600px) {
     .exercise_creator_view.active {
         width: 0px;
@@ -41,141 +39,140 @@
     }
 }
 
+@media (min-height: 800px) {
+    .muscle_selector_container {
+        max-height: 450px !important;  
+    }
+}
+@media (min-height: 900px) {
+    .muscle_selector_container {
+        max-height: 550px !important;  
+    }
+}
+
 /* ============ EXERCISE NAME INPUT ============ */
 .exercise_name_label {
-    font-size: 10px;
+    font-size: 12px;
     font-weight: 400;
     letter-spacing: 0.6px;
-    text-transform: uppercase;
     text-align: left;
-    margin-left: 3px;
+    margin-left: 2px;
     width: 100%;
-    color: rgba(255, 255, 255, 0.4);
+    color: #7a7a7a;
     white-space: nowrap;
 }
 
 #exercise_name_input {
-    background: rgba(255, 255, 255, 0.05);    
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 5px;
+    background: #1e1e1e;    
+    border: 1px solid #3232327b;
+    border-radius: 3px;
     width: 100%;
     height: 30px;
     padding: 0px 14px;
-    color: white;
-    font-size: 14px;
+    color: #999999;
+    font-size: 12px;
     outline: none;
-    box-shadow:
-        inset 0 1px 3px rgba(0, 0, 0, 0.4),
-        inset 0 -1px 0 rgba(255, 255, 255, 0.04),
-        0 1px 0 rgba(255, 255, 255, 0.03);
-    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    font-weight: 400;
+    transition: all 0.2s ease;
     flex-shrink: 0;
 }
 
 #exercise_name_input.not_valid {
-    border-color: #ff4d4d !important;
-    background: rgba(255, 77, 77, 0.08) !important;
-    box-shadow: 
-        inset 0 1px 3px rgba(0, 0, 0, 0.4),
-        inset 0 -1px 0 rgba(255, 77, 77, 0.04),
-        0 0 8px rgba(255, 77, 77, 0.4) !important;
+    border-color: #b8860b !important;
+    background: #251f18 !important;
 }
+
 #exercise_name_input::placeholder {
-    color: rgba(255, 255, 255, 0.25);
+    color: #5c5c5c;
     font-size: 12px;
     font-weight: 300;
 }
 
 #exercise_name_input:hover {
-    border-color: rgba(255, 255, 255, 0.14);
-    box-shadow:
-        inset 0 1px 3px rgba(0, 0, 0, 0.45),
-        inset 0 -1px 0 rgba(255, 255, 255, 0.05),
-        0 1px 0 rgba(255, 255, 255, 0.04);
+    border-color: #3f3f3f;
+    background: #232323;
 }
 
 #exercise_name_input:focus {
-    border-color: rgba(255, 255, 255, 0.22);
-    box-shadow:
-        inset 0 1px 3px rgba(0, 0, 0, 0.45),
-        inset 0 -1px 0 rgba(255, 255, 255, 0.06),
-        0 0 0 3px rgba(255, 255, 255, 0.05);
+    border-color: #575757;
+    background: #2a2a2a;
 }
 
 
 /* ============ MUSCLES SELECTOR ============ */
-/* ============ PUSH MUSCLES SELECTOR ============ */
 .exercise_creator_muscle_slector {
     width: 100%;
     margin-top: 12px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-
     flex: 1 1 auto;
     min-height: 0;
-
-    /* ya no hace scroll aquí */
     overflow: hidden;
 }
 
 .muscle_selector_container {
     display: flex;
+    padding-right: 0px;
     flex-direction: column;
     width: 100%;
     gap: 10px;
-
-    flex: 1 1 auto;
     min-height: 0;
-
-    /* por defecto (ventana alta): sin scroll, se comprimen los selectores */
-    overflow: hidden;
+    height: auto;
+    max-height: 350px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex-shrink: 0;
+    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.muscle_selector_container.is-tall {
+    padding-right: 5px;
+    border-bottom: 2px solid #3232327b;
 }
 
 .muscle_selector_container::-webkit-scrollbar { width: 3px; }
 .muscle_selector_container::-webkit-scrollbar-track { background: transparent; }
-.muscle_selector_container::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.12);
-    border-radius: 3px;
-}
-.muscle_selector_container::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.2);
-}
+.muscle_selector_container::-webkit-scrollbar-thumb:hover { background: #4a4a4a; }
+.muscle_selector_container::-webkit-scrollbar-thumb { background: #3a3a3a; border-radius: 3px; }
+
+
+
+
 
 .muscles_selector_tittle {
-    color: rgba(255, 255, 255, 0.55);
+    color: #7a7a7a;
     font-size: 8px;
     font-weight: 500;
     letter-spacing: 0.5px;
     text-transform: uppercase;
     width: 100%;
-    padding: 4px 10px;   /* antes: 5px 10px 3px 10px */
-    background: rgba(255, 255, 255, 0.05);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 4px 10px;
     box-sizing: border-box;
-
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    background: #181818;
+    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.exercise_creator_muscle_selector_title {
-    font-size: 10px;
+.exercise_creator_muscle_selector_title, .exercise_creator_saved_exercices_tittle {
+    font-size: 12px;
     font-weight: 400;
     letter-spacing: 0.6px;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.4);
-    margin: 0 0 7px 3px; /* el gap que antes daba el padre, ahora un margin-bottom */
+    color: #7a7a7a;
+    margin: 0 0 7px 2px;
     padding: 0;
-    flex-shrink: 0; /* nunca se comprime ni se scrollea */
+    flex-shrink: 0;
 }
+
+.exercise_creator_saved_exercices_tittle { margin-top: 20px;}
 
 .muscles_selected {
     font-size: 9px;
     font-weight: 600;
     letter-spacing: 0.3px;
-    color: rgba(255, 255, 255, 0.4);
+    color: #7a7a7a;
     transition: color 0.15s ease;
     display: flex;
     align-items: center;
@@ -183,63 +180,52 @@
     max-width: 20px;
     height: 15px;
     padding: 1px 6px 0px 6px;
-    margin-bottom: 2zpx;
-    border-radius: 4px;
-    background: rgba(255, 255, 255, 0.06);
+    margin-bottom: 2px;
+    border-radius: 3px;
+    background: #202020;
     flex-shrink: 0;
 }
 
 .exercise_creator_muscle_selector_subtitle {
     font-size: 9px;
     font-weight: 300;
-    color: rgba(255, 255, 255, 0.3);
+    color: #5c5c5c;
     margin: -6px 0 10px 3px;
     padding: 0;
     flex-shrink: 0;
 }
+
 .muscles_selector {
     display: flex;
     flex-direction: column;
     align-items: stretch;
     width: 100%;
     justify-content: flex-start;
-    border-radius: 5px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow:
-        inset 0 1px 3px rgba(0, 0, 0, 0.3),
-        0 1px 0 rgba(255, 255, 255, 0.03);
+    border-radius: 3px;
+    flex-shrink: 0;
+    background: #181818;
     overflow: hidden;
-
-    /* por defecto (ventana alta): se reparten el espacio y se comprimen juntos */
-    flex: 1 1 0;
-    min-height: 0;
-    max-height: 205px;
+    min-height: 25px;
+    height: 25px;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* -------- VENTANA BAJA: se invierte el comportamiento -------- */
-@media (max-height: 650px) {
-    .muscle_selector_container {
-        overflow-y: auto;
-        overflow-x: hidden;
-    }
-
-    .muscles_selector {
-        flex: 0 0 auto; /* tamaño natural, deja de comprimirse */
-    }
+.muscles_selector:not(.open):hover .muscles_selector_tittle {
+    background: #272727;
+}
+.muscles_selector:not(.open):active .muscles_selector_tittle {
+    background: #2c2c2c;
+}
+.muscles_selector:not(.open):active {
+    transform: scale(0.99);
+}
+.muscles_selector:active {
+    transform: scale(0.99);
 }
 
-.muscles_selector_tittle {
-    color: rgba(255, 255, 255, 0.55);
-    font-size: 8px;
-    font-weight: 500;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    width: 100%;
-    padding: 5px 10px 3px 10px;
-    background: rgba(255, 255, 255, 0.05);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    box-sizing: border-box;
+.muscles_selector.open {
+    height: 205px;
 }
 
 .muscles_selector_buttons {
@@ -251,20 +237,21 @@
     gap: 4px;
     padding: 6px;
     box-sizing: border-box;
-    /* eliminado: overflow-y: auto; */
     overflow-x: hidden;
 }
+
 .core_muscles_selector {
     max-height: 135px;
 }
 
-.muscles_selector_buttons::-webkit-scrollbar { width: 3px; }
+.muscles_selector_buttons::-webkit-scrollbar { width: 3px; display: none; }
 .muscles_selector_buttons::-webkit-scrollbar-track { background: transparent; }
-.muscles_selector_buttons::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.2); }
+.muscles_selector_buttons::-webkit-scrollbar-thumb:hover { background: #4a4a4a; }
 .muscles_selector_buttons::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.12);
+    background: #3a3a3a;
     border-radius: 3px;
 }
+
 
 .muscle_selector_button {
     display: flex;
@@ -274,19 +261,19 @@
     width: 100%;
     box-sizing: border-box;
     text-align: left;
-    border-radius: 5px;
+    border-radius: 2.5px;
     padding: 0px;
-    background: transparent;
-    border: 1px solid transparent;
-    background: rgba(0, 0, 0, 0.25);
+    background: #202020;
+    border: none;
     overflow: hidden;
     flex-shrink: 0;
-    color: rgba(255, 255, 255, 0.7);
+    color: #bbbbbb;
     font-size: 10px;
     height: 30px;
     cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: all 0.15s ease;
 }
+
 .muscle_name_info {
     display: flex;
     flex-direction: row;
@@ -297,14 +284,8 @@
     height: 30px;
     box-sizing: border-box;
     flex-shrink: 0;
-    /* border: 1px solid red; */
     margin: 0;
 }
-/* .muscle_inv {
-    width: 100%;
-    height: 100%;
-    border: 1px solid green;
-} */
 
 .muscle_involucration_label {
     display: flex;
@@ -313,8 +294,8 @@
     min-width: 30px;
     height: 16px;
     padding: 0 6px;
-    border-radius: 4px;
-    background: rgba(255, 255, 255, 0.06);
+    border-radius: 3px;
+    background: #292929;
     flex-shrink: 0;
 }
 
@@ -322,23 +303,25 @@
     font-size: 9px;
     font-weight: 600;
     letter-spacing: 0.3px;
-    color: rgba(120, 220, 130, 0.9); /* verde por defecto */
+    color: #4dff4d;
     transition: color 0.15s ease;
 }
 
 .muscle_involucration_value.is-zero {
-    color: rgba(255, 100, 100, 0.9); /* rojo cuando es 0% */
+    color: #ff6b6b;
 }
 
 .muscle_selector_button:hover {
-    background: rgba(0, 0, 0, 0.15);
-    color: rgba(255, 255, 255, 0.9);
+    background: #292929;
+    border-color: #3a3a3a;
+    color: #ffffff;
 }
 
 .muscle_selector_button:active {
-    background: rgba(0, 0, 0, 0.25);
+    background: #202020;
     transform: scale(0.98);
 }
+
 .muscle_selector_button.open {
     height: 60px;
 }
@@ -366,8 +349,8 @@
     width: 95%;
     height: 4px;
     border-radius: 2px;
-    background: rgba(255, 255, 255, 0.1);
-    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4);
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 .muscle_inv_fill {
@@ -376,15 +359,15 @@
     left: 0;
     height: 100%;
     border-radius: 2px;
-    background: rgba(255, 255, 255, 0.5);
-    width: 0%; /* valor de ejemplo, luego lo pondrá el JS dinámicamente */
+    background: rgba(255, 255, 255, 0.45);
+    width: 0%;
     transition: width 0.15s ease;
 }
 
 .muscle_inv_handle {
     position: absolute;
     top: 50%;
-    left: 0%; /* debe coincidir con el % de .muscle_inv_fill */
+    left: 0%;
     width: 12px;
     height: 12px;
     border-radius: 50%;
@@ -399,58 +382,140 @@
     transform: translate(-50%, -50%) scale(1.2);
 }
 
+/* ------- SAVED EXERCISES ------- */
+.exercise_creator_saved_exercises {
+    flex: 1 1 auto;
+    min-height: 0;
+    background: #181818;
+    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border-radius: 3px;
+    overflow-y: auto;
+    box-sizing: border-box;
+    gap: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 5px;
+    margin-top: 0px;
+}
+
+.exercise_creator_saved_exercises::-webkit-scrollbar { width: 3px; }
+.exercise_creator_saved_exercises::-webkit-scrollbar-track { background: transparent; } 
+.exercise_creator_saved_exercises::-webkit-scrollbar-thumb { background: #3a3a3a; border-radius: 3px; }
+.exercise_creator_saved_exercises::-webkit-scrollbar-thumb:hover { background: #4a4a4a; }
 
 
+/* ------- SAVED EXERCISE ITEM ------- */
+.saved_exercise_item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 8px 0 10px;
+    height: 30px;
+    background: #202020;
+    border-radius: 3px;
+    flex-shrink: 0;
+    transition: all 0.15s ease;
+}
 
+.saved_exercise_item:last-child {
+    border-bottom: none;
+}
 
+.saved_exercise_item:hover {
+    background: #1c1c1c;
+}
 
+.saved_exercise_name {
+    font-size: 10px;
+    font-weight: 400;
+    color: #bbbbbb;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.saved_exercise_actions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.saved_exercise_action_btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    border: none;
+    border-radius: 2.5px;
+    background: transparent;
+    color: #7a7a7a;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.saved_exercise_action_btn svg {
+    width: 12px;
+    height: 12px;
+}
+
+.saved_exercise_edit_btn:hover {
+    background: #292929;
+    color: #ffffff;
+}
+
+.saved_exercise_delete_btn:hover {
+    background: #331e1e;
+    color: #ff6b6b;
+}
+
+.saved_exercise_action_btn:active {
+    transform: scale(0.9);
+}
 /* ------- SAVE EXERCISE BTN ------- */
 #save_exercise_btn {
-    position: static;      /* antes: absolute; bottom: 5px */
-    flex-shrink: 0;         /* que nunca se encoja, mantiene su tamaño fijo */
-    width: 100%;            /* antes: 92% (compensaba el padding lateral del absolute) */
-    margin-top: 6px;        /* pequeño respiro respecto al selector, opcional */
-    display: flex;          /* recuerda quitar el display:none si sigue puesto en el otro archivo */
+    position: static;
+    flex-shrink: 0;
+    width: 100%;
+    margin-top: 6px;
+    display: flex;
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
     height: 30px;
-    border-radius: 5px;
-    background: rgba(255, 255, 255, 0.05);    
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 3px;
+    background: #202020;    
+    border: 1px solid #292929;
     padding: 0px 14px;
-    color: rgba(255, 255, 255, 0.4);
+    color: #7a7a7a;
     font-size: 14px;
     outline: none;
     cursor: pointer;
-    box-shadow:
-        inset 0 1px 3px rgba(0, 0, 0, 0.4),
-        inset 0 -1px 0 rgba(255, 255, 255, 0.04),
-        0 1px 0 rgba(255, 255, 255, 0.03);
-    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: all 0.2s ease;
 }
 
 #save_exercise_btn:hover {
-    color: rgba(255, 255, 255, 0.57);
-    background: rgba(255, 255, 255, 0.09);
-    border-color: rgba(255, 255, 255, 0.16);
-    box-shadow:
-        inset 0 1px 3px rgba(0, 0, 0, 0.45),
-        inset 0 -1px 0 rgba(255, 255, 255, 0.05),
-        0 1px 0 rgba(255, 255, 255, 0.04);
+    color: #ffffff;
+    background: #292929;
+    border-color: #3a3a3a;
 }
 
 #save_exercise_btn:active {
-    background: rgba(255, 255, 255, 0.04);
-    border-color: rgba(255, 255, 255, 0.1);
+    background: #1e1e1e;
+    border-color: #202020;
     transform: scale(0.98);
-    box-shadow:
-        inset 0 1px 4px rgba(0, 0, 0, 0.5),
-        inset 0 -1px 0 rgba(255, 255, 255, 0.03);
 }
 
 #save_exercise_btn:disabled {
     opacity: 0.4;
     cursor: not-allowed;
-    pointer-events: none; /* bloquea hover/active mientras está desactivado */
+    pointer-events: none;
 }
