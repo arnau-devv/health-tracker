@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="components/sports/strength_training/routine_creator/routine_creator.css">
     <link rel="stylesheet" href="components/sports/strength_training/add_workout/add_workout.css">
     <link rel="stylesheet" href="components/sports/strength_training/main_subview/strength_training_main_subview.css">
+    <link rel="stylesheet" href="vendor/flatpickr/flatpickr.min.css">
+    <link rel="stylesheet" href="components/shared/date_picker/date_picker.css">
 </head>
 
 <body spellcheck="false">
@@ -126,7 +128,124 @@
                             </div>
                         </div>
 
-                        <div class="workout_details_container"></div>
+                        <div class="workout_details_container">
+                            <!-- Datepicker -->
+                            <div class="date_picker_field">
+                                <!-- <label for="workout_date_input" class="date_picker_label">Workout Date</label> -->
+                                <input type="text" id="workout_date_input" class="date_picker_input" readonly>
+                            </div>
+                            <div class="workout_details_helper_container">
+                                <!-- Workout Satisfaction -->
+                                <div class="workout_satisfaction_field">
+                                    <label class="date_picker_label">Workout Feel</label>
+                                    <div class="workout_satisfaction_selector">
+                                        
+                                        <!-- Terrible -->
+                                        <button class="workout_satisfaction_btn" id="workout_satisfaction_terrible">
+                                            <svg class="workout_satisfaction_icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+                                                <circle cx="12" cy="12" r="10"></circle>
+                                                <path d="M8 15c1.5-2 6.5-2 8 0"></path>
+                                                <line x1="9" y1="9" x2="9.01" y2="9" stroke-width="3"></line>
+                                                <line x1="15" y1="9" x2="15.01" y2="9" stroke-width="3"></line>
+                                            </svg>
+                                        </button>
+                                        
+                                        <!-- Bad -->
+                                        <button class="workout_satisfaction_btn" id="workout_satisfaction_bad">
+                                            <svg class="workout_satisfaction_icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+                                                <circle cx="12" cy="12" r="10"></circle>
+                                                <path d="M8 14.5c1.5-1 6.5-1 8 0"></path>
+                                                <line x1="9" y1="9" x2="9.01" y2="9" stroke-width="3"></line>
+                                                <line x1="15" y1="9" x2="15.01" y2="9" stroke-width="3"></line>
+                                            </svg>
+                                        </button>
+                                        
+                                        <!-- Neutral -->
+                                        <button class="workout_satisfaction_btn" id="workout_satisfaction_neutral">
+                                            <svg class="workout_satisfaction_icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+                                                <circle cx="12" cy="12" r="10"></circle>
+                                                <line x1="8" y1="14" x2="16" y2="14"></line>
+                                                <line x1="9" y1="9" x2="9.01" y2="9" stroke-width="3"></line>
+                                                <line x1="15" y1="9" x2="15.01" y2="9" stroke-width="3"></line>
+                                            </svg>
+                                        </button>
+                                        
+                                        <!-- Good -->
+                                        <button class="workout_satisfaction_btn" id="workout_satisfaction_good">
+                                            <svg class="workout_satisfaction_icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+                                                <circle cx="12" cy="12" r="10"></circle>
+                                                <path d="M8 13.5c1.5 1.5 6.5 1.5 8 0"></path>
+                                                <line x1="9" y1="9" x2="9.01" y2="9" stroke-width="3"></line>
+                                                <line x1="15" y1="9" x2="15.01" y2="9" stroke-width="3"></line>
+                                            </svg>
+                                        </button>
+                                        
+                                        <!-- Great -->
+                                        <button class="workout_satisfaction_btn" id="workout_satisfaction_great">
+                                            <svg class="workout_satisfaction_icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+                                                <circle cx="12" cy="12" r="10"></circle>
+                                                <path d="M7 13c1.5 3 8.5 3 10 0"></path>
+                                                <line x1="9" y1="9" x2="9.01" y2="9" stroke-width="3"></line>
+                                                <line x1="15" y1="9" x2="15.01" y2="9" stroke-width="3"></line>
+                                            </svg>
+                                        </button>
+                                        
+                                    </div>
+                                </div>
+                                <!-- Workout Intensity -->
+                                <div class="workout_intensity_field">
+                                    <label class="date_picker_label">Workout Intensity</label>
+                                    <div class="workout_intensity_selector">
+                                        
+                                        <!-- 1. Very Low (Solo la silueta vacía) -->
+                                        <button class="workout_intensity_btn" id="workout_intensity_very_low" title="Very Low">
+                                            <svg class="workout_intensity_icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+                                                <!-- Silueta base (se repite en todas para mantener el tamaño 100% idéntico) -->
+                                                <path d="M12 2 C 8 6 5 10.5 5 14.5 a 7 7 0 0 0 14 0 C 19 10.5 16 6 12 2 Z"></path>
+                                            </svg>
+                                        </button>
+                                        
+                                        <!-- 2. Low (Pequeño núcleo sólido en la base) -->
+                                        <button class="workout_intensity_btn" id="workout_intensity_low" title="Low">
+                                            <svg class="workout_intensity_icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M12 2 C 8 6 5 10.5 5 14.5 a 7 7 0 0 0 14 0 C 19 10.5 16 6 12 2 Z"></path>
+                                                <!-- Núcleo interno -->
+                                                <path d="M12 13 C 11 14.5 10.5 16 10.5 17.5 a 1.5 1.5 0 0 0 3 0 C 13.5 16 13 14.5 12 13 Z" fill="currentColor" stroke="none"></path>
+                                            </svg>
+                                        </button>
+                                        
+                                        <!-- 3. Moderate (Núcleo medio) -->
+                                        <button class="workout_intensity_btn" id="workout_intensity_moderate" title="Moderate">
+                                            <svg class="workout_intensity_icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M12 2 C 8 6 5 10.5 5 14.5 a 7 7 0 0 0 14 0 C 19 10.5 16 6 12 2 Z"></path>
+                                                <!-- Núcleo interno -->
+                                                <path d="M12 9 C 10.5 11 9.5 14 9.5 16.5 a 2.5 2.5 0 0 0 5 0 C 14.5 14 13.5 11 12 9 Z" fill="currentColor" stroke="none"></path>
+                                            </svg>
+                                        </button>
+                                        
+                                        <!-- 4. High (Núcleo grande casi llenando la llama) -->
+                                        <button class="workout_intensity_btn" id="workout_intensity_high" title="High">
+                                            <svg class="workout_intensity_icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M12 2 C 8 6 5 10.5 5 14.5 a 7 7 0 0 0 14 0 C 19 10.5 16 6 12 2 Z"></path>
+                                                <!-- Núcleo interno -->
+                                                <path d="M12 5 C 9.5 8 8 12 8 15 a 4 4 0 0 0 8 0 C 16 12 14.5 8 12 5 Z" fill="currentColor" stroke="none"></path>
+                                            </svg>
+                                        </button>
+                                        
+                                        <!-- 5. Very High (La llama entera se vuelve sólida) -->
+                                        <button class="workout_intensity_btn" id="workout_intensity_very_high" title="Very High">
+                                            <svg class="workout_intensity_icon" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+                                                <!-- Misma silueta exterior, pero rellenada con el color activo -->
+                                                <path d="M12 2 C 8 6 5 10.5 5 14.5 a 7 7 0 0 0 14 0 C 19 10.5 16 6 12 2 Z"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                            </div> 
+                            <button id="save_workout_btn">Register Workout</button>
+
+                        </div>
 
                     </div>
                 </div>
@@ -538,6 +657,8 @@
 
 
     <script src="index.js"></script>
+    <script src="vendor/flatpickr/flatpickr.min.js"></script>
+    <script src="components/shared/date_picker/date_picker.js"></script>
     <script src="components/sports/strength_training/strength_training.js"></script>
     <script src="components/sports/strength_training/add_workout/add_workout.js"></script>
     <script src="components/sports/strength_training/exercise_creator/exercise_creator.js"></script>

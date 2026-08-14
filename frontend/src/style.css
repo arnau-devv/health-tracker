@@ -5,7 +5,7 @@
     box-sizing: border-box;
     user-select: none;
     font-family: 'Poppins', sans-serif !important;
-    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) !important, 
 }
 
 
@@ -383,7 +383,7 @@ button:focus {
 .main_window {
     height: 100%;
     width: 100%;
-    min-width: none;
+    min-width: 0;
     border-radius:5px;
     box-sizing: border-box;
     background: #1a1a1a;
@@ -394,8 +394,9 @@ button:focus {
 .module-view {
     display: none;
     width: 100%;
+    /* border: 1px solid blue; */
     height: 100%;
-    border-radius: 5px;
+    /* padding-bottom: 10px !important; */
 }
 
 

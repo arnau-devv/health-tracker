@@ -60,10 +60,12 @@ function changeTitleAnimated(newText, directionClass) {
 }
 
 // --- EVENTOS ---
+const saveWorkoutBtn = document.getElementById('save_workout_btn')
 
 strengthTrainingMainViewBtn.addEventListener('click', () => {
     strengthTrainingAddWorkoutBtn.classList.remove('selected');
     strengthTrainingMainViewBtn.classList.add('selected');
+    saveWorkoutBtn.classList.remove('is_active');
 
     strengthTrainingMainView.style.transform = 'translateX(0%)';
     strengthTrainingAddWorkoutView.style.transform = 'translateX(0%)';
@@ -74,6 +76,7 @@ strengthTrainingMainViewBtn.addEventListener('click', () => {
 strengthTrainingAddWorkoutBtn.addEventListener('click', () => {
     strengthTrainingAddWorkoutBtn.classList.add('selected');
     strengthTrainingMainViewBtn.classList.remove('selected');
+    saveWorkoutBtn.classList.add('is_active');
 
     strengthTrainingMainView.style.transform = 'translateX(-100%)';
     strengthTrainingAddWorkoutView.style.transform = 'translateX(-100%)';

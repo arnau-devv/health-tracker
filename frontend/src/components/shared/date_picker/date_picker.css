@@ -1,0 +1,267 @@
+.date_picker_field {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 4px;
+    min-width: 267px;
+    max-width: 267px;
+}
+
+.date_picker_label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #7a7a7a;
+    margin-left: 3px;
+}
+
+.date_picker_input {
+    background: #181818;
+    border: 1px solid #292929;
+    border-radius: 3px;
+    width: 100%;
+    height: 30px;
+    padding: 0 8px;
+    color: #bbbbbb;
+    text-align: center;
+    font-size: 11px;
+    user-select: none;
+    outline: none;
+    cursor: default;
+    transition: all 0.15s ease;
+    max-width: 100%;
+}
+
+.date_picker_input:hover {
+    background: #202020;
+    border-color: #3a3a3a;
+    color: #ffffff;
+}
+
+.date_picker_input:focus {
+    background: #202020;
+    border-color: #3a3a3a;
+    color: #ffffff;
+}
+
+.date_picker_input:active {
+    transform: scale(0.995);
+}
+
+/* Flatpickr calendar overrides */
+.flatpickr-calendar {
+    background: #181818;
+    border: 1px solid #292929;
+    border-radius: 3px;
+    box-shadow: none;
+    font-family: 'Poppins', sans-serif;
+}
+.flatpickr-calendar.inline {
+    width: 100%;
+    max-width: 100%;
+    margin-top: 4px;
+}
+
+.flatpickr-day {
+    color: #888888;
+    border-radius: 2.5px;
+    font-size: 11px;
+    border: 1px solid transparent;
+    transition:
+        background 0.3s ease,
+        color 0.3s ease,
+        border-color 0.3s ease,
+        transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+        opacity 0.3s ease;
+}
+
+.flatpickr-day:hover {
+    background: #232323;
+    color: #cccccc;
+    border-color: transparent;
+}
+
+.flatpickr-day:active {
+    transform: scale(0.94);
+    background: #2a2a2a;
+}
+
+.flatpickr-day.selected,
+.flatpickr-day.selected:hover {
+    background: #2a2a2a;
+    border-color: #383838;
+    color: #eeeeee;
+}
+
+.flatpickr-day.today {
+    border: 1px dashed #303030;
+    color: #aaaaaa;
+}
+.flatpickr-day.today.selected {
+    border: 1px solid #303030;
+    
+}
+
+.flatpickr-day.today:hover {
+    background: #232323;
+    border-color: #383838;
+    color: #cccccc;
+}
+
+.flatpickr-day.flatpickr-disabled {
+    color: #3a3a3a;
+    opacity: 0.5;
+}
+
+.flatpickr-day.prevMonthDay,
+.flatpickr-day.nextMonthDay {
+    color: #3a3a3a;
+    opacity: 0.5;
+    transition:
+        background 0.3s ease,
+        color 0.3s ease,
+        border-color 0.3s ease,
+        transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+        opacity 0.3s ease;
+}
+
+.flatpickr-day.prevMonthDay:hover,
+.flatpickr-day.nextMonthDay:hover {
+    background: #232323;
+    color: #666666;
+    border-color: transparent;
+    opacity: 0.8;
+}
+
+.flatpickr-day.prevMonthDay:active,
+.flatpickr-day.nextMonthDay:active {
+    transform: scale(0.94);
+    background: #2a2a2a;
+}
+/* ---- Weekday row ---- */
+.flatpickr-weekdays {
+    background: transparent;
+}
+span.flatpickr-weekday {
+    background: transparent;
+    color: #7a7a7a;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+/* ---- Month navigation header ---- */
+.flatpickr-months {
+    display: flex;
+    align-items: center;
+    padding: 8px 0;
+}
+
+.flatpickr-months .flatpickr-month {
+    color: #7a7a7a;
+    fill: #7a7a7a;
+    background: transparent;
+    height: 34px;
+}
+
+.flatpickr-months .flatpickr-prev-month,
+.flatpickr-months .flatpickr-next-month {
+    color: #7a7a7a;
+    fill: #7a7a7a;
+    border-radius: 2.5px;
+    transition: all 0.15s ease;
+}
+
+.flatpickr-months .flatpickr-prev-month:active,
+.flatpickr-months .flatpickr-next-month:active {
+    transform: scale(0.9);
+}
+
+.flatpickr-months .flatpickr-prev-month:hover svg,
+.flatpickr-months .flatpickr-next-month:hover svg {
+    fill: #ffffff;
+}
+
+.flatpickr-current-month {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    font-size: 11px;
+    padding-top: 0;
+}
+
+/* Month dropdown (native <select>) */
+.flatpickr-current-month .flatpickr-monthDropdown-months {
+    background: #181818;
+    border: 1px solid #292929;
+    border-radius: 2.5px;
+    color: #bbbbbb;
+    font-family: 'Poppins', sans-serif;
+    font-size: 11px;
+    padding: 2px 4px;
+    /* appearance: auto; keeps the native dropdown arrow visible and usable */
+    color-scheme: dark;
+    transition: all 0.15s ease;
+}
+
+.flatpickr-current-month .flatpickr-monthDropdown-months:hover {
+    border-color: #3a3a3a;
+    color: #ffffff;
+}
+
+.flatpickr-current-month .flatpickr-monthDropdown-months option {
+    background: #181818; /* dropdown options render outside our CSS scope otherwise */
+    color: #bbbbbb;
+}
+
+/* Year input */
+.flatpickr-current-month input.cur-year {
+    background: #181818;
+    border: 1px solid #292929;
+    border-radius: 2.5px;
+    color: #bbbbbb;
+    font-family: 'Poppins', sans-serif;
+    font-size: 11px;
+    padding: 2px 4px;
+    width: 50px;
+    font-weight: 700;
+    color: #7a7a7a;
+    color-scheme: dark;
+    transition: all 0.15s ease;
+    text-align: left;
+    margin-left: 5px;
+    border: none;
+}
+
+.flatpickr-current-month input.cur-year:hover {
+    border-color: #3a3a3a;
+}
+
+.flatpickr-current-month input.cur-year:focus {
+    outline: none;
+    border-color: #3a3a3a;
+    color: #ffffff;
+}
+
+.flatpickr-current-month .arrowUp,
+.flatpickr-current-month .arrowDown,
+.flatpickr-current-month .numInputWrapper span {
+    display: none !important;
+}
+
+.flatpickr-current-month .numInputWrapper {
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flatpickr-day.flatpickr-disabled,
+.flatpickr-day.flatpickr-disabled:hover {
+    cursor: default !important;
+}

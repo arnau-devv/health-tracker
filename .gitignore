@@ -3,6 +3,7 @@
 # Local project dependencies and environments
 # ==========================================
 venv/
+backend/venv
 .venv/
 env/
 ENV/
@@ -16,6 +17,8 @@ venv.bak/
 node_modules/
 .pnp
 .pnp.js
+src/vendor
+
 
 # ==========================================
 # CONFIGURATION & SECRETS
@@ -33,6 +36,7 @@ node_modules/
 # Bytecode, cache, and compiled binaries
 # ==========================================
 __pycache__/
+backend/__pycache__/
 *.py[cod]
 *$py.class
 *.so

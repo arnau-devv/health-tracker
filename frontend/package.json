@@ -4,7 +4,8 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "postinstall": "node scripts/copy-vendor.js"
   },
   "keywords": [],
   "author": "",
@@ -12,5 +13,8 @@
   "type": "commonjs",
   "devDependencies": {
     "electron": "^43.3.0"
+  },
+  "dependencies": {
+    "flatpickr": "^4.6.13"
   }
 }

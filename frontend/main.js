@@ -9,11 +9,11 @@ function createMainWindow() {
     mainWindow = new BrowserWindow({
         width: 1200,
         height: 750,
-        minWidth: 300,
+        minWidth: 400,
         minHeight: 400,
-        backgroundColor: '#00000000',  // Transparent
-        vibrancy: 'dark',              // MacOS
-        backgroundMaterial: 'acrylic',  // Windows 11+
+        // backgroundColor: '#00000000',  // Transparent
+        // vibrancy: 'dark',              // MacOS
+        // backgroundMaterial: 'acrylic',  // Windows 11+
         frame: false,
         webPreferences: {
             nodeIntegration: false,
