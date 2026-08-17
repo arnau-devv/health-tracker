@@ -94,12 +94,17 @@
     border-radius: 3px;
     display: flex;
     height: 25px;
+    min-height: 25px;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
     overflow: hidden;
     background: #181818;
-    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: all 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+.exercises_list.open {
+    height: 100%;
 }
 
 .exercises_list_tittle {
@@ -119,6 +124,15 @@
     align-items: center;
     justify-content: space-between;
 }
+
+.exercises_list:not(.open):hover {
+    background: #272727;
+}
+.exercises_list:not(.open):active {
+    background: #2c2c2c;
+    transform: scale(0.98);
+}
+
 
 .exercises_list_items {
     width: 100%;
@@ -142,7 +156,7 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    justify-content: center;
+    justify-content: flex-start;
     width: 100%;
     box-sizing: border-box;
     text-wrap: nowrap;
@@ -152,13 +166,15 @@
     background: #202020;
     text-align: left;
     border: none;
-    /* overflow: hidden; */
+    padding-right: 5px;
+    overflow: hidden;
     flex-shrink: 0;
     color: #bbbbbb;
     font-size: 10px;
     padding-left: 12px;
-    height: 30px;
+    max-height: 30px;        /* antes: height: 30px */
     cursor: pointer;
+    position: relative;
     transition: all 0.15s ease;
 }
 
@@ -173,11 +189,71 @@
     transform: scale(0.98);
 }
 
-/* ----------- Selected Exercices Manager */
+.exercise_list_item.is-dragging {
+    border: 1px dashed #7a7a7a;
+    color: #7a7a7a;
+    opacity: 0.7;
+}
+
+.exercise_list_item.open {
+    max-height: 160px !important; /* <- este es tu "X": ajusta el techo aquí */
+}
+
+.exercise_item_name {
+    font-size: 10px;
+    color: inherit;
+    height: 30px;         /* misma altura que el botón cerrado */
+    line-height: 30px;    /* centra el texto dentro de esos 30px */
+    flex-shrink: 0;       /* nunca se comprime, pase lo que pase */
+}
+
+.exercise_item_muscles {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    width: 100%;
+    padding: 2px 6px 8px 0;
+    opacity: 0;
+    flex: 1;
+    min-height: 0;       /* necesario para que overflow-y funcione dentro de flex */
+    overflow-y: auto;
+    transition: opacity 0.15s ease;
+}
+.exercise_list_item.open .exercise_item_muscles { opacity: 1; }
+
+
+.exercise_item_muscles::-webkit-scrollbar { width: 3px; }
+.exercise_item_muscles::-webkit-scrollbar-track { background: transparent; }
+.exercise_item_muscles::-webkit-scrollbar-thumb { background: #3a3a3a; border-radius: 2px; }
+.exercise_item_muscles::-webkit-scrollbar-thumb:hover { background: #4a4a4a; }
+
+.exercise_item_muscle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding-right: 6px;
+    font-size: 9px;
+    flex-shrink: 0; /* evita que cada fila se comprima al hacer scroll */
+}
+
+.exercise_item_muscle_name {
+    color: #999999;
+}
+
+.exercise_item_muscle_value {
+    color: #ffffff;
+    font-weight: 500;
+}
+
+/* ============================================================================================
+-                               Selected Exercices Manager
+============================================================================================== */
 .selected_exercices_manager {
     display: flex;
     flex-direction: column;
     align-items: center;
+    box-sizing: border-box;
     justify-content: flex-start;
     background: #202020;
     border-radius: 3px;
@@ -186,20 +262,308 @@
     width: 50%;
     min-width: 0;
     height: 100%;
+    gap: 5px;
+    max-height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
+.selected_exercices_manager::-webkit-scrollbar { width: 3px; }
+.selected_exercices_manager::-webkit-scrollbar-track { background: transparent; }
+.selected_exercices_manager::-webkit-scrollbar-thumb { background: #3a3a3a; border-radius: 2px; }
+.selected_exercices_manager::-webkit-scrollbar-thumb:hover { background: #4a4a4a; }
+
 
 .selected_exercices_manager_bg {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: -1 ;
 }
 
-.exercises_list.open {
-    height: 100px;
+.selected_exercise_item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 100%;
+    box-sizing: border-box;
+    background: #181818;
+    border-radius: 3px;
+    padding: 5px;
+    flex-shrink: 0;
+    cursor: pointer;
+    gap: 5px;
+    transition: all 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+    height: 25px;
+    min-height: 25px;
+    overflow: hidden;
 }
 
-/* -------------- WORKOUT DETAILS ---------- */
+.selected_exercise_item.open { height: auto; }
+.selected_exercise_item_tittle:active .selected_exercise_item{ transform: scale(0.98); }
+.selected_exercise_item:not(.open):hover { background: #272727; }
+.selected_exercise_item:not(.open):active { background: #2c2c2c; transform: scale(0.98); }
+
+
+.selected_exercise_item_tittle {
+    color: #7a7a7a;
+    font-size: 10px;
+    padding-left: 5px;
+    width: 100%;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-transform: capitalize;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    box-sizing: border-box;
+    /* border: 1px dashed rgba(255, 0, 0, 0.3); */
+}
+.selected_exercise_item_details {
+    width: 100%;
+    height: auto;
+    /* border: 1px solid yellow; */
+    border-radius: 3px;
+    padding: 0px !important;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    box-sizing: border-box;
+    background: #202020;
+    background: #181818;
+}
+.selected_exercise_item.open .selected_exercise_item_details { padding: 5px; }
+.sets_counter {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 15px;
+    margin-bottom: 2px;
+    border-radius: 3px;
+    background: #202020;
+    flex-shrink: 0;
+    overflow: hidden;
+    padding-left: 6px; /* espacio antes del label */
+    gap: 4px;
+}
+
+.sets_counter_label {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    color: #5a5a5a;
+    user-select: none;
+    flex-shrink: 0;
+}
+
+.sets_counter_value {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    color: #7a7a7a;
+    min-width: 14px;
+    text-align: center;
+    transition: color 0.15s ease;
+    user-select: none;
+}
+
+.sets_counter_btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 15px;
+    height: 15px;
+    padding: 0;
+    border: none;
+    background: none;
+    color: #7a7a7a;
+    font-size: 10px;
+    line-height: 1;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.sets_counter_btn:hover {
+    background: #292929;
+    color: #ffffff;
+}
+
+.sets_counter_btn:active {
+    background: #202020;
+    transform: scale(0.85);
+}
+
+
+/* ----------------------- SETS*/
+.set_row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 32px;
+    min-height: 32px;
+    box-sizing: border-box;
+    padding: 0 6px;
+    gap: 6px;
+    border-radius: 3px;
+    background: #181818;
+    background: #202020;
+
+    flex-shrink: 0;
+}
+
+.set_row_index {
+    font-size: 9px;
+    color: #5a5a5a;
+    font-weight: 600;
+    width: 12px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.set_field {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 18px;
+    border-radius: 3px;
+        background: #181818;
+    margin-top: 0px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.set_field_label {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    color: #5a5a5a;
+    padding-left: 5px;
+    padding-right: 5px;
+    user-select: none;
+}
+
+.set_field_btn {
+    display: flex;
+    margin-top: 0px;
+    align-items: center;
+    justify-content: center;
+    width: 14px;
+    height: 18px;
+    padding: 0;
+    border: none;
+    background: none;
+    color: #7a7a7a;
+    font-size: 9px;
+    line-height: 1;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.set_field_btn:hover {
+    background: #292929;
+    color: #ffffff;
+}
+
+.set_field_btn:active {
+    background: #202020;
+    transform: scale(0.85);
+}
+
+.set_field_input {
+    width: 22px;
+    border: none;
+    background: none;
+    color: #bbbbbb;
+    font-size: 9px;
+    font-weight: 600;
+    text-align: center;
+    outline: none;
+    -moz-appearance: textfield;
+}
+
+.set_field_input::-webkit-outer-spin-button,
+.set_field_input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.set_field_input:focus {
+    color: #ffffff;
+}
+
+.set_rpe_checkbox {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.rpe_checkbox_input {
+    display: none;
+}
+
+.rpe_checkbox_box {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    background: #202020;
+    transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.rpe_checkbox_input:checked + .rpe_checkbox_box {
+    background: #4CAF50;
+}
+
+.set_rpe_checkbox:active .rpe_checkbox_box {
+    transform: scale(0.85);
+}
+
+.rpe_checkbox_label {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    color: #5a5a5a;
+    user-select: none;
+    padding-top: 2px;
+}
+
+.set_type_select {
+    height: 18px;
+    border-radius: 3px;
+    background: #202020;
+    color: #7a7a7a;
+    border: none;
+    font-size: 7px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    padding: 0 4px;
+    cursor: pointer;
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+    transition: all 0.15s ease;
+}
+
+.set_type_select:hover {
+    color: #ffffff;
+    background: #292929;
+}
+
+
+/* ============================================================================================
+                                        WORKOUT DETAILS 
+============================================================================================== */
 .workout_details_container {
     height: 100%;
     /* border: 1px solid rgba(255, 0, 0, 0.256); */
@@ -226,12 +590,19 @@
     }
     .saved_exercises_list, .selected_exercices_manager {
         width: 100%;
+        height: 50% !important;
+        max-height: 100% !important;
     }
+    .set_row {
+        height: 25px;
+        min-height: 25px;
+    }
+    .set_field_btn, .set_field { margin-top: 2px; }
 }
 @media (max-width: 500px) {
     /* .exercice_manager_container {
         display: none;
-    } */
+    } */    
     .strength_training_add_workout_subview {
         flex-direction: column;
         /* border: 1px solid red; */

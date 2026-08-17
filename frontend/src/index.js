@@ -4,26 +4,37 @@
 // { "type": "type", "payload": { ... } }
 // ============================================================================================
 
-const socket = new WebSocket('ws://localhost:8765');
+let socket;
 
-socket.addEventListener('open', () => console.log('Conectado al backend Python'));
+function connectSocket() {
+    console.log('Intentando conectar al backend Python...');
+    socket = new WebSocket('ws://localhost:8765');
 
-socket.addEventListener('error', (err) => console.error('Error de WebSocket:', err));
+    socket.addEventListener('open', () => {
+        console.log('¡Conectado al backend Python!');
+    });
 
-socket.addEventListener('close', () => {
-    console.log('Connection to backend closed. Retrying in 2s...');
-    setTimeout(connectSocket, 2000);
-});
+    socket.addEventListener('error', (err) => {
+        console.error('Error de WebSocket:', err);
+    });
 
-socket.addEventListener('message', (event) => {
-    const data = JSON.parse(event.data);
-    console.log('Mensaje del backend:', data);
+    socket.addEventListener('close', () => {
+        console.log('Conexión cerrada. Reintentando en 2 segundos...');
+        // Vuelve a llamar a la función tras 2 segundos de forma indefinida
+        setTimeout(connectSocket, 2000);
+    });
 
-    // Websocket routing
-    if (data.type === 'exercise_saved') {
-        console.log('Ejercicio guardado correctamente:', data.payload);
-    }
-});
+    socket.addEventListener('message', (event) => {
+        const data = JSON.parse(event.data);
+        console.log('Mensaje del backend:', data);
+
+        // Websocket routing
+        if (data.type === 'exercise_saved')    onExerciseSaved(data.payload)
+        if (data.type === 'invalid_exercise')  showErrorToast(data.payload.errors);
+    });
+}
+
+connectSocket();
 
 
 function sendToBackend(type, payload) {
@@ -102,3 +113,56 @@ function desactivateViews() {
     strengthTrainingView.classList.remove('active')
 }
 
+
+// ============================================================================================
+//                                      TOASTS POP UP MANAGER
+// ============================================================================================
+function adaptToastPopupToHelperViews() {
+    const isAnyViewOpen = exerciseCreatorView?.classList.contains('active') || 
+                        routineCreatorView?.classList.contains('active');
+    toastPopup.classList.toggle('helper_view_opened', isAnyViewOpen);
+}
+
+
+
+// ==================== ERROR
+const toastPopup = document.getElementById('toast_popup')
+let toastTimer = null
+
+function showErrorToast(errors) {
+    // Clear any running timer before starting a new one
+    clearTimeout(toastTimer)
+
+    // Render errors as individual lines
+    toastPopup.innerHTML = errors.map(err => `<p>· ${err}</p>`).join('')
+
+    // Force reflow if already visible so the animation re-triggers
+    toastPopup.classList.remove('error', 'valid')
+    void toastPopup.offsetHeight
+
+    toastPopup.classList.add('error')
+
+    toastTimer = setTimeout(() => {
+        toastPopup.classList.remove('error')
+    }, 3000)
+}
+
+
+// ==================== OKAY / VALID / SUSCCESS
+function showValidToast(message) {
+     // Clear any running timer before starting a new one
+    clearTimeout(toastTimer)
+
+    // Render errors as individual lines
+    toastPopup.textContent = "· " + message
+
+    // Force reflow if already visible so the animation re-triggers
+    toastPopup.classList.remove('valid', 'error')
+    void toastPopup.offsetHeight
+
+    toastPopup.classList.add('valid')
+
+    toastTimer = setTimeout(() => {
+        toastPopup.classList.remove('valid')
+    }, 3000)
+}

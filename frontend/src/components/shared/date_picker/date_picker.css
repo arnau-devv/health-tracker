@@ -3,8 +3,8 @@
     flex-direction: column;
     width: 100%;
     gap: 4px;
-    min-width: 267px;
-    max-width: 267px;
+    min-width: 265px;
+    max-width: 265px;
 }
 
 .date_picker_label {

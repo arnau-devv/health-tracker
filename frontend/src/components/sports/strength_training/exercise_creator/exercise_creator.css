@@ -495,6 +495,24 @@
 .saved_exercise_action_btn:active {
     transform: scale(0.9);
 }
+
+.saved_exercise_info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+    min-width: 0; /* permite que el nombre trunque con ellipsis dentro del flex */
+    overflow: hidden;
+}
+
+.saved_exercise_category {
+    font-size: 8px;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    color: #5a5a5a;
+    text-transform: uppercase;
+    flex-shrink: 0; /* la categoría nunca se comprime ni trunca, solo el nombre */
+}
 /* ------- SAVE EXERCISE BTN ------- */
 #save_exercise_btn {
     position: static;

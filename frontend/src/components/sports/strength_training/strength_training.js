@@ -26,6 +26,7 @@ exerciseCreationViewBtn.addEventListener('click', () => {
     console.log('Sub-module selected: Exercise Creator');
     if (routineCreatorView.classList.contains('active')) closeInstantly(routineCreatorView);
     exerciseCreatorView.classList.toggle('active');
+    adaptToastPopupToHelperViews();
 });
 
 
@@ -34,6 +35,7 @@ routineCreationViewBtn.addEventListener('click', () => {
     console.log('Sub-module selected: Routine Creator');
     if (exerciseCreatorView.classList.contains('active')) closeInstantly(exerciseCreatorView);
     routineCreatorView.classList.toggle('active');
+    adaptToastPopupToHelperViews();
 });
 
 
@@ -83,3 +85,8 @@ strengthTrainingAddWorkoutBtn.addEventListener('click', () => {
 
     changeTitleAnimated('New Workout', 'slide-left');
 });
+
+
+
+
+

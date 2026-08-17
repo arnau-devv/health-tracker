@@ -1,6 +1,7 @@
 import asyncio
 import json
 import websockets
+from modules.sport.strength_training.exercise import Exercise
 
 connected_clients = set()
 
@@ -28,9 +29,27 @@ async def handle_message(websocket, raw_message):
 
     msg_type = data.get("type")
     payload = data.get("payload")
-
     print(f"Mensaje recibido -> type: {msg_type}, payload: {payload}", flush=True)
-
+    
+    # NEW EXERCISE
+    if msg_type == "save_exercise":
+        errors = Exercise.validate_exercise(payload)
+        if  errors:
+            await websocket.send(json.dumps({
+                "type": "invalid_exercise",
+                "payload": {"errors": errors}
+            }))
+            return
+        
+        exercise = Exercise(name = payload["name"], muscles = payload["muscles"])
+        
+        await websocket.send(json.dumps({
+            "type": "exercise_saved",
+            "payload": {"name": exercise.name, "muscles": exercise.muscles, "category": exercise.category}
+        }))
+        return
+        
+        
     response = {"type": "ack", "received": data}
     await websocket.send(json.dumps(response))
 
