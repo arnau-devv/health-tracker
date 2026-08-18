@@ -78,8 +78,6 @@ workoutIntensityButtons.forEach(Btn => {
 } )
 
 
-
-
 // ============================================================================================
 //                                      ON SAVED EXERCICE - post backend
 // ============================================================================================
@@ -94,8 +92,8 @@ function onExerciseSaved(payload) {
     const { name, category, muscles } = payload
     showValidToast("Exercise saved correctly.")
     addExerciseToList(name, category, muscles)
-    addSavedExerciseToCreator(name, category) // <- nuevo
-
+    resetExerciseCreatorData()
+    addSavedExerciseToCreator(name, category)
 }
 
 function addExerciseToList(name, category, muscles) {
@@ -108,8 +106,8 @@ function addExerciseToList(name, category, muscles) {
     const button = document.createElement('button')
     button.className = 'exercise_list_item'
     button.id = `${slugify(name)}_exercise_item`
-    button.draggable = true // <- nuevo
-    button.dataset.exerciseName = name // <- nuevo, para leerlo al soltar
+    button.draggable = true
+    button.dataset.exerciseName = name
 
     button.innerHTML = `
         <span class="exercise_item_name">${name}</span>
@@ -190,6 +188,7 @@ selectedExercisesManager.addEventListener('drop', (e) => {
 function createSelectedExerciseItem(name) {
     const item = document.createElement('div')
     item.className = 'selected_exercise_item'
+    item.dataset.exerciseName = name
 
     item.innerHTML = `
         <h3 class="selected_exercise_item_tittle">
@@ -205,7 +204,6 @@ function createSelectedExerciseItem(name) {
             <!-- SET DETAILS - generated dinamically via js -->
         </div>
     `
-
     return item
 }
 // ===================================================================================================
@@ -234,17 +232,17 @@ selectedExercisesManager.addEventListener('click', (e) => {
     const valueSpan = item.querySelector('.sets_counter_value')
     const detailsContainer = item.querySelector('.selected_exercise_item_details')
     let value = parseInt(valueSpan.textContent, 10) || 0
-
-    if (value === 1) item.classList.remove('open')
-
-    if (btn.classList.contains('sets_counter_increase') && value < 20) {
-        value++
-        detailsContainer.appendChild(createSetRow(value))
+        
+        if (btn.classList.contains('sets_counter_increase') && value < 20) {
+            value++
+            detailsContainer.appendChild(createSetRow(value))
+            if (value === 1) item.classList.add('open')
     }
 
     if (btn.classList.contains('sets_counter_decrease') && value > 0) {
         value--
         detailsContainer.lastElementChild?.remove() // elimina la última fila
+        if (value === 0) item.classList.remove('open')
     }
 
     valueSpan.textContent = value
@@ -280,8 +278,8 @@ function updateRowData(row) {
     row.setData = {
         weight: parseFloat(row.querySelector('.weight_input').value) || 0,
         reps: parseInt(row.querySelector('.reps_input').value, 10) || 0,
-        rpe: row.querySelector('.rpe_checkbox_input').checked,
-        type: row.querySelector('.set_type_select').value,
+        reached_failure: row.querySelector('.reached_failure_checkbox_input').checked,
+        // bodyweighted: row.querySelector('.bodyweighted_checkbox_input').checked,
     }
 }
 
@@ -292,37 +290,146 @@ function createSetRow(index) {
 
     row.innerHTML = `
         <span class="set_row_index">${index}</span>
+        <div class="set_field_container">
+            <div class="set_field weight_field">
+                <span class="set_field_label">KG</span>
+                <button class="set_field_btn set_field_decrease" type="button">−</button>
+                <input class="set_field_input weight_input" type="text" inputmode="decimal" value="0">
+                <button class="set_field_btn set_field_increase" type="button">+</button>
+            </div>
 
-        <div class="set_field weight_field">
-            <span class="set_field_label">KG</span>
-            <button class="set_field_btn set_field_decrease" type="button">−</button>
-            <input class="set_field_input weight_input" type="text" inputmode="decimal" value="0">
-            <button class="set_field_btn set_field_increase" type="button">+</button>
+            <div class="set_field reps_field">
+                <span class="set_field_label">REPS</span>
+                <button class="set_field_btn set_field_decrease" type="button">−</button>
+                <input class="set_field_input reps_input" type="text" inputmode="numeric" value="0">
+                <button class="set_field_btn set_field_increase" type="button">+</button>
+            </div>
         </div>
 
-        <div class="set_field reps_field">
-            <span class="set_field_label">REPS</span>
-            <button class="set_field_btn set_field_decrease" type="button">−</button>
-            <input class="set_field_input reps_input" type="text" inputmode="numeric" value="0">
-            <button class="set_field_btn set_field_increase" type="button">+</button>
+        <div class="set_checkbox_container">
+            <label class="set_reached_failure_checkbox">
+                <span class="reached_failure_checkbox_box">
+                    <input type="checkbox" class="reached_failure_checkbox_input">
+                    <svg viewBox="0 0 22 22">
+                        <use xlink:href="#checkbox_style1"></use>
+                    </svg>
+                </span>
+                <span class="reached_failure_checkbox_label">RPE</span>
+            </label>
+
+            
         </div>
 
-        <label class="set_rpe_checkbox">
-            <input type="checkbox" class="rpe_checkbox_input">
-            <span class="rpe_checkbox_box"></span>
-            <span class="rpe_checkbox_label">RPE</span>
-        </label>
+        `
+        // <label class="set_reached_failure_checkbox">
+        //         <span class="reached_failure_checkbox_box">
+        //             <input type="checkbox" class="bodyweighted_checkbox_input">
+        //             <svg viewBox="0 0 22 22">
+        //                 <use xlink:href="#checkbox_style1"></use>
+        //             </svg>
+        //         </span>
+        //         <span class="reached_failure_checkbox_label">BW</span>
+        //     </label>
+        // Guardamos los datos de esta serie directamente en el elemento
+        row.setData = { weight: 0, reps: 0, reached_failure: false, type: 'working' }
+        
+        return row
+        // <select class="set_type_select">
+        //     <option value="warmup">W</option>
+        //     <option value="working" selected>WS</option>
+        //     <option value="dropset">DS</option>
+        //     <option value="failure">F</option>
+        // </select>
+    }
 
-        <select class="set_type_select">
-            <option value="warmup">W</option>
-            <option value="working" selected>WS</option>
-            <option value="dropset">DS</option>
-            <option value="failure">F</option>
-        </select>
-    `
 
-    // Guardamos los datos de esta serie directamente en el elemento
-    row.setData = { weight: 0, reps: 0, rpe: false, type: 'working' }
+// ===================================================================================================
+//                                          WORKOUT SAVING
+// ====================================================================================================
+function collectWorkoutData() {
+    const selectedDate = workoutDatePicker.selectedDates[0] || null
+    const satisfactionBtn = document.querySelector('.workout_satisfaction_btn.selected')
+    const intensityBtn = document.querySelector('.workout_intensity_btn.selected')
 
-    return row
+    const exercises = []
+    document.querySelectorAll('.selected_exercise_item').forEach(item => {
+        const sets = []
+        item.querySelectorAll('.set_row').forEach(row => sets.push(row.setData))
+
+        exercises.push({
+            name: item.dataset.exerciseName,
+            sets,
+        })
+    })
+
+    console.log(selectedDate)
+    console.log(satisfactionBtn?.id.replace('workout_satisfaction_', '') || null)
+    console.log(intensityBtn?.id.replace('workout_intensity_', '') || null)
+    console.log(exercises)
+
+    return {
+        date: selectedDate,
+        satisfaction: satisfactionBtn?.id.replace('workout_satisfaction_', '') || null,
+        intensity: intensityBtn?.id.replace('workout_intensity_', '') || null,
+        exercises,
+    }
+}
+
+function validateWorkoutData(workout) {
+    const errors = []
+
+    if (!workout.date) errors.push('Select a workout date.')
+    if (!workout.satisfaction) errors.push('Select how the workout felt.')
+    if (!workout.intensity) errors.push('Select the workout intensity.')
+    if (workout.exercises.length === 0) errors.push('Add at least one exercise.')
+
+    workout.exercises.forEach(exercise => {
+        if (exercise.sets.length === 0) {
+            errors.push(`"${capitalizeWords(exercise.name)}" has no sets.`)
+            return
+        } else {
+            exercise.sets.forEach((set, i) => {
+                if (set.weight === 0 && set.reps === 0) {
+                    errors.push(`${capitalizeWords(exercise.name)} - set ${i + 1}: enter weight or reps.`)
+                }
+            })
+        }
+    })
+
+    return errors
+}
+
+function capitalizeWords(text) {
+    if (!text) return "";
+  
+    return text
+        .toLowerCase()
+        .split(" ")
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
+}
+
+// Example usage:
+const input = "hello my name is carlos";
+console.log(capitalizeWords(input)); 
+// Output: "Hello My Name Is Carlos"
+
+saveWorkoutBtn.addEventListener('click', () => {
+    const workout = collectWorkoutData()
+    const errors = validateWorkoutData(workout)
+
+    if (errors.length > 0) {
+        showErrorToast(errors)
+        return
+    }
+
+    sendToBackend('save_workout', workout)
+})
+
+
+// ============================================================================================
+//                                      ON SAVED WORKOUT - post backend
+// ============================================================================================
+function onWorkoutSaved() {
+    showValidToast("Workout saved correctly.")
 }

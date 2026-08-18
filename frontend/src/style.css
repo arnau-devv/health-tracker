@@ -173,22 +173,13 @@ button:focus {
     flex-wrap: nowrap;
 }
 
-.sidebar_module:hover {
-    transform: scale(1.06);
-}
+.sidebar_module:hover { transform: scale(1.06); }
 
-.sidebar_module:focus-visible {
-    background: rgba(255, 255, 255, 0.025);
-    transform: scale(1.06);
-}
+.sidebar_module:focus-visible { background: rgba(255, 255, 255, 0.025); transform: scale(1.06); }
 
-.sidebar_module:active {
-    transform: scale(0.96);
-}
+.sidebar_module:active { transform: scale(0.96); }
 
-.sidebar_module:focus { 
-    outline: none; 
-}
+.sidebar_module:focus {  outline: none;  }
 
 .sidebar_module_icon {
     width: 30px;
@@ -200,9 +191,7 @@ button:focus {
     filter: grayscale(100%);
 }
 
-.sidebar_module:hover .sidebar_module_icon {
-    opacity: 0.95;
-}
+.sidebar_module:hover .sidebar_module_icon { opacity: 0.95; }
 
 /* ================================================================
    MODULE COLORS - Health themed
@@ -263,9 +252,7 @@ button:focus {
     background: transparent;
 }
 
-#sports_module_btn.active #sports_module_btn:hover {
-    transform: scale(1) !important;
-}
+#sports_module_btn.active #sports_module_btn:hover { transform: scale(1) !important; }
 #sports_module_btn.active .sidebar_module_icon {
     opacity: 1;
     filter: grayscale(0%) drop-shadow(0 0 4px rgba(192, 30, 30, 0.4));
@@ -294,9 +281,7 @@ button:focus {
     transform: scale(1) !important;
 }
 
-#sports_module_btn.active {
-    height: 120px;
-}
+#sports_module_btn.active { height: 120px; }
 
 #sports_module_btn.active .sport-module {
     display: flex;
@@ -330,9 +315,7 @@ button:focus {
     transform: translateY(0);
 }
 
-#sports_module_btn.active .sport-sidebar-icon {
-    transform: scale(0.7) rotate(60deg);
-}
+#sports_module_btn.active .sport-sidebar-icon { transform: scale(0.7) rotate(60deg); }
 
 .sport-module {
     display: none;
@@ -347,21 +330,15 @@ button:focus {
 
     transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
-.sport-module:hover {
-    transform: scale(1.15);
-}
-.sport-module:active {
-    transform: scale(1);
-}
+.sport-module:hover { transform: scale(1.15); }
+.sport-module:active { transform: scale(1); }
 .sport-module img {
     width: 25px;
     height: 25px;
     margin: 0;
 }
 
-.sport-sidebar-icon{
-    margin-bottom: 15px;
-}
+.sport-sidebar-icon{ margin-bottom: 15px; }
 
 .sport-icon {
     margin-bottom: 15px;
@@ -371,9 +348,7 @@ button:focus {
     filter: grayscale(100%);
 }
 
-.sport-module.active .sport-icon{
-    filter: grayscale(0%);
-}
+.sport-module.active .sport-icon{ filter: grayscale(0%); }
 
 
 
@@ -395,9 +370,7 @@ button:focus {
 .module-view {
     display: none;
     width: 100%;
-    /* border: 1px solid blue; */
     height: 100%;
-    /* padding-bottom: 10px !important; */
 }
 
 
@@ -405,9 +378,7 @@ button:focus {
 /* ================================================================
                         LATERAL WINDOW HELPER
    ================================================================ */
-.lateral_window_helper.no_transition {
-    transition: none !important;
-}
+.lateral_window_helper.no_transition { transition: none !important; }
 
 
 /* ================================================================
@@ -417,9 +388,9 @@ button:focus {
     position: fixed;
     width: 300px;
     height: auto;
-    transform: translateY(-100px);
     top: 20px;
     right: 20px;
+    transform: translateY(calc(-100% - 40px));
     background: #181818;
     border: 1px solid #292929;
     border-left: 3px solid #3a3a3a;
@@ -430,7 +401,7 @@ button:focus {
     letter-spacing: 0.3px;
     padding: 8px 14px;
     pointer-events: none;
-    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1); 
     z-index: 9999;
     max-width: 320px;
     text-align: left;
@@ -445,9 +416,7 @@ button:focus {
     color: #ffffff;
 }
 
-.toast_popup.helper_view_opened {
-    right: 270px;
-}
+.toast_popup.helper_view_opened { right: 270px; }
 
 .toast_popup.valid {
     transform: translateY(0px);

@@ -2,8 +2,10 @@ import asyncio
 import json
 import websockets
 from modules.sport.strength_training.exercise import Exercise
+from modules.sport.strength_training.workout import Workout, WorkoutExercise, SetLog
 
-connected_clients = set()
+
+connected_clients: set = set()
 
 async def handler(websocket):
     connected_clients.add(websocket)
@@ -27,13 +29,13 @@ async def handle_message(websocket, raw_message):
         print(f"Mensaje no válido (no es JSON): {raw_message}", flush=True)
         return
 
-    msg_type = data.get("type")
-    payload = data.get("payload")
+    msg_type: str = data.get("type")
+    payload: dict = data.get("payload")
     print(f"Mensaje recibido -> type: {msg_type}, payload: {payload}", flush=True)
     
-    # NEW EXERCISE
+    # ------------ NEW EXERCISE
     if msg_type == "save_exercise":
-        errors = Exercise.validate_exercise(payload)
+        errors: list = Exercise.validate(payload)
         if  errors:
             await websocket.send(json.dumps({
                 "type": "invalid_exercise",
@@ -41,16 +43,46 @@ async def handle_message(websocket, raw_message):
             }))
             return
         
-        exercise = Exercise(name = payload["name"], muscles = payload["muscles"])
+        exercise: object[Exercise] = Exercise(name = payload["name"], muscles = payload["muscles"], bodyweighted = payload["bodyweighted"])
         
         await websocket.send(json.dumps({
             "type": "exercise_saved",
-            "payload": {"name": exercise.name, "muscles": exercise.muscles, "category": exercise.category}
+            "payload": {"name": exercise.name, "muscles": exercise.muscles, "bodyweighted": exercise.bodyweighted, "category": exercise.category}
+        }))
+        return
+    
+    # ------------ NEW WORKOUT
+    if msg_type == "save_workout":
+        errors: list = Workout.validate(payload)
+        if errors:
+            await websocket.send(json.dumps({
+                "type": "invalid_workout",
+                "payload": {"errors": errors}
+            }))
+            return
+        
+        exercises: list[WorkoutExercise] = []
+        for exercise_data in payload["exercises"]:
+            sets: list [SetLog] = [SetLog(**set) for set in exercise_data["sets"]]
+            exercises.append(WorkoutExercise(name = exercise_data["name"], sets = sets))
+            
+        workout: object[Workout] = Workout(
+            date = payload["date"],
+            satisfaction = payload["satisfaction"],
+            intensity = payload["intensity"],
+            exercises = exercises
+        )
+
+        print(f"\nWorkout saved -> Date: {payload['date']} | Satisfaction: {payload['satisfaction']} | Intensity: {payload['intensity']} | Exercises: {len(exercises)}", flush=True)
+        
+        await websocket.send(json.dumps({
+            "type": "workout_saved",
+            "payload": {}
         }))
         return
         
         
-    response = {"type": "ack", "received": data}
+    response: dict = {"type": "ack", "received": data}
     await websocket.send(json.dumps(response))
 
 

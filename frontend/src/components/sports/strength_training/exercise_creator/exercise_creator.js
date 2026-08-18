@@ -128,7 +128,7 @@ updateSaveButtonState(); // initial state
 
 saveExerciseBtn.addEventListener('click', () => {
     const name = nameInput.value.trim();
-
+    const bodyweighted = document.querySelector('.bodyweighted_checkbox_input')?.checked ?? false;
     const muscles = {};
     document.querySelectorAll('.muscle_selector_button').forEach(btn => {
         const involvement = Number(btn.dataset.involvement) || 0;
@@ -138,7 +138,7 @@ saveExerciseBtn.addEventListener('click', () => {
         }
     });
 
-    const exerciseData = { name, muscles };
+    const exerciseData = { name, muscles, bodyweighted };
     console.log('Exercise to save:', exerciseData);
     sendToBackend('save_exercise', exerciseData);
 });
@@ -183,4 +183,40 @@ function addSavedExerciseToCreator(name, category) {
     `
 
     exerciseCreatorSavedExercises.appendChild(item)
+}
+
+
+// ============================================================================================
+//           ON SAVED EXERCISE  - RESET EXERCISE CREATOR (after successful save)
+// ============================================================================================
+function resetExerciseCreatorData() {
+    // Nombre
+    nameInput.value = ''
+
+    // Cada botón de músculo vuelve a 0%
+    document.querySelectorAll('.muscle_selector_button').forEach(btn => {
+        btn.dataset.involvement = 0
+        btn.classList.remove('open')
+
+        const fill = btn.querySelector('.muscle_inv_fill')
+        const handle = btn.querySelector('.muscle_inv_handle')
+        const valueLabel = btn.querySelector('.muscle_involucration_value')
+
+        if (fill) fill.style.width = '0%'
+        if (handle) handle.style.left = '0%'
+        if (valueLabel) {
+            valueLabel.textContent = '0%'
+            valueLabel.classList.add('is-zero')
+        }
+    })
+
+    // Recalcula el contador "X seleccionados" de cada grupo (push/pull/legs/core)
+    document.querySelectorAll('.muscles_selector').forEach(group => {
+        group.classList.remove('open')
+        const counterLabel = group.querySelector('.muscles_selected')
+        if (counterLabel) counterLabel.textContent = 0
+    })
+
+    // El botón de guardar vuelve a desactivarse (no hay nombre ni músculos)
+    updateSaveButtonState()
 }

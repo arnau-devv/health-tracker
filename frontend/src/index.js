@@ -29,8 +29,12 @@ function connectSocket() {
         console.log('Mensaje del backend:', data);
 
         // Websocket routing
+        // ----- EXERCISE
         if (data.type === 'exercise_saved')    onExerciseSaved(data.payload)
-        if (data.type === 'invalid_exercise')  showErrorToast(data.payload.errors);
+        if (data.type === 'invalid_exercise')  showErrorToast(data.payload.errors)
+        // ----- WORKOUT
+        if (data.type === 'workout_saved')     onWorkoutSaved()
+        if(data.type === 'invalid_workout')    showErrorToast(data.payload.errors)
     });
 }
 
@@ -134,7 +138,7 @@ function showErrorToast(errors) {
     clearTimeout(toastTimer)
 
     // Render errors as individual lines
-    toastPopup.innerHTML = errors.map(err => `<p>· ${err}</p>`).join('')
+    toastPopup.innerHTML = errors.map(err => `<p>·&nbsp; ${err}</p>`).join('')
 
     // Force reflow if already visible so the animation re-triggers
     toastPopup.classList.remove('error', 'valid')

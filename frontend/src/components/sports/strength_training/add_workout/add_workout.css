@@ -160,18 +160,17 @@
     width: 100%;
     box-sizing: border-box;
     text-wrap: nowrap;
+    text-transform: capitalize;
     text-overflow: ellipsis;
     border-radius: 2.5px;
-    padding: 0px;
+    padding: 0px 12px 12px 12px;
     background: #202020;
     text-align: left;
     border: none;
-    padding-right: 5px;
     overflow: hidden;
     flex-shrink: 0;
     color: #bbbbbb;
     font-size: 10px;
-    padding-left: 12px;
     max-height: 30px;        /* antes: height: 30px */
     cursor: pointer;
     position: relative;
@@ -212,14 +211,15 @@
     flex-direction: column;
     gap: 3px;
     width: 100%;
-    padding: 2px 6px 8px 0;
+    padding: 2px 0px 0px 5px;
     opacity: 0;
     flex: 1;
     min-height: 0;       /* necesario para que overflow-y funcione dentro de flex */
     overflow-y: auto;
     transition: opacity 0.15s ease;
+
 }
-.exercise_list_item.open .exercise_item_muscles { opacity: 1; }
+.exercise_list_item.open .exercise_item_muscles { opacity: 1;}
 
 
 .exercise_item_muscles::-webkit-scrollbar { width: 3px; }
@@ -312,6 +312,7 @@
     font-size: 10px;
     padding-left: 5px;
     width: 100%;
+    line-height: 1.7;
     font-weight: 500;
     letter-spacing: 0.5px;
     text-transform: capitalize;
@@ -334,6 +335,7 @@
     box-sizing: border-box;
     background: #202020;
     background: #181818;
+    cursor: auto;
 }
 .selected_exercise_item.open .selected_exercise_item_details { padding: 5px; }
 .sets_counter {
@@ -347,7 +349,8 @@
     background: #202020;
     flex-shrink: 0;
     overflow: hidden;
-    padding-left: 6px; /* espacio antes del label */
+    padding-left: 6px;
+    padding-top: 2px; 
     gap: 4px;
 }
 
@@ -385,7 +388,7 @@
     font-size: 10px;
     line-height: 1;
     cursor: pointer;
-    transition: all 0.15s ease;
+    transition: all 0.15s ease, transform none;
 }
 
 .sets_counter_btn:hover {
@@ -412,11 +415,33 @@
     padding: 0 6px;
     gap: 6px;
     border-radius: 3px;
-    background: #181818;
+    /* background: #181818; */
     background: #202020;
 
     flex-shrink: 0;
 }
+
+.set_field_container {
+    width: 50%;
+    height: 70%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.set_checkbox_container {
+    width: 30%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin-right: 0px;
+}
+
 
 .set_row_index {
     font-size: 9px;
@@ -425,6 +450,7 @@
     width: 12px;
     text-align: center;
     flex-shrink: 0;
+    
 }
 
 .set_field {
@@ -433,9 +459,10 @@
     justify-content: center;
     height: 18px;
     border-radius: 3px;
-        background: #181818;
+    background: #181818;
     margin-top: 0px;
     overflow: hidden;
+    max-width: 82px;
     flex-shrink: 0;
 }
 
@@ -464,7 +491,7 @@
     font-size: 9px;
     line-height: 1;
     cursor: pointer;
-    transition: all 0.15s ease;
+    transition: background 0.15s ease, color 0.15s ease, transform none;
 }
 
 .set_field_btn:hover {
@@ -473,7 +500,7 @@
 }
 
 .set_field_btn:active {
-    background: #202020;
+    background: #181818;
     transform: scale(0.85);
 }
 
@@ -499,35 +526,87 @@
     color: #ffffff;
 }
 
-.set_rpe_checkbox {
+
+/* --- REACHED FAILURE --- */
+.set_reached_failure_checkbox {
     display: flex;
     align-items: center;
-    gap: 3px;
+    gap: 4px;
     cursor: pointer;
     flex-shrink: 0;
 }
 
-.rpe_checkbox_input {
-    display: none;
-}
-
-.rpe_checkbox_box {
+.reached_failure_checkbox_box {
+    display: inline-block;
     width: 12px;
     height: 12px;
+    position: relative;
+    flex-shrink: 0;
+    transition: transform 0.15s ease;
+}
+.bodyweighted_exercise_ckeckbox_box {
+    width: 15px;
+    height: 15px;
+}
+
+.reached_failure_checkbox_box > * {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.reached_failure_checkbox_input, .bodyweighted_checkbox_input {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
+    box-sizing: border-box;
+    background: #181818;
     border-radius: 3px;
-    background: #202020;
-    transition: background 0.15s ease, transform 0.15s ease;
+    border: 1px solid #3a3a3a;
+    outline: none;
+    transition: border-color 0.15s ease, border-width 0.15s ease;
 }
 
-.rpe_checkbox_input:checked + .rpe_checkbox_box {
-    background: #4CAF50;
+.set_reached_failure_checkbox:hover .reached_failure_checkbox_input {
+    border-color: #5a5a5a;
+    border-width: 1.5px;
 }
 
-.set_rpe_checkbox:active .rpe_checkbox_box {
+.reached_failure_checkbox_input:checked .bodyweighted_checkbox_input:checked {
+    border-color: #4CAF50;
+    border-width: 1.5px;
+    transition-delay: 0.08s;
+} 
+
+.reached_failure_checkbox_box svg {
+    pointer-events: none;
+    fill: none;
+    stroke: #4CAF50;
+    stroke-width: 2.3px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 93;
+    stroke-dashoffset: 94;
+    transition: stroke-dasharray 0.3s ease, stroke-dashoffset 0.3s ease;
+}
+
+.reached_failure_checkbox_input:checked ~ svg, .bodyweighted_checkbox_input:checked ~ svg {
+    stroke-dasharray: 16 93;
+    stroke-dashoffset: 109;
+    transition-delay: 0.1s;
+}
+
+.set_reached_failure_checkbox:active .reached_failure_checkbox_box {
     transform: scale(0.85);
 }
 
-.rpe_checkbox_label {
+.reached_failure_checkbox_label {
     font-size: 9px;
     font-weight: 600;
     letter-spacing: 0.3px;
@@ -535,30 +614,17 @@
     color: #5a5a5a;
     user-select: none;
     padding-top: 2px;
+    transition: color 0.15s ease; 
 }
 
-.set_type_select {
-    height: 18px;
-    border-radius: 3px;
-    background: #202020;
-    color: #7a7a7a;
-    border: none;
-    font-size: 7px;
-    font-weight: 600;
-    letter-spacing: 0.3px;
-    text-transform: uppercase;
-    padding: 0 4px;
-    cursor: pointer;
-    outline: none;
-    -webkit-appearance: none;
-    appearance: none;
-    transition: all 0.15s ease;
+.set_reached_failure_checkbox:has(.reached_failure_checkbox_input:checked) .reached_failure_checkbox_label {
+    color: #bbbbbb;
 }
 
-.set_type_select:hover {
-    color: #ffffff;
-    background: #292929;
+.set_reached_failure_checkbox:has(.bodyweighted_checkbox_input:checked) .reached_failure_checkbox_label {
+    color: #bbbbbb;
 }
+
 
 
 /* ============================================================================================
@@ -582,6 +648,107 @@
     transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     margin-left: 15px;
 }
+
+/* 1. Convierte al padre de las filas en un "Contenedor" vigilado */
+.selected_exercise_item_details {
+    container-type: inline-size;
+    container-name: detailsContainer;
+}
+
+@container detailsContainer (max-width: 305px) {
+    .set_row {
+        display: grid;
+        grid-template-columns: 20px 1fr; 
+        grid-template-rows: auto auto;  
+        height: auto;
+        min-height: auto;
+        padding: 6px 8px;
+        gap: 8px 12px; 
+        align-items: center;
+    }
+    .set_row_index {
+        grid-column: 1;
+        grid-row: 1 / span 2;
+        align-self: center;             
+        justify-self: center;           
+    }
+    .set_field_container {
+        grid-column: 2;
+        grid-row: 1;
+        justify-content: space-between;
+        gap: 10px;
+        width: 100%;
+    }
+    .set_checkbox_container {
+        grid-column: 2;
+        grid-row: 2;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        gap: 10px;
+        margin-right: 0;
+    }
+    .set_field, .set_reached_failure_checkbox { 
+        max-width: none; 
+        flex: 1; 
+        justify-content: center;
+    }
+}
+
+@container detailsContainer (max-width: 225px) {
+    .set_row {
+        display: grid;
+        grid-template-columns: 20px 1fr; 
+        /* Cuatro filas en total: 2 para los fields, 2 para los checkboxes */
+        grid-template-rows: auto; 
+        height: auto;
+        min-height: auto;
+        padding: 8px 8px;
+        gap: 6px 12px;
+        align-items: center;
+    }
+
+    .set_row_index {
+        grid-column: 1;
+        grid-row: 1; /* Al no usar span, se centrará verticalmente en relación a TODA la altura del grid right */
+        align-self: center;
+        justify-self: center;
+    }
+
+    /* 🔴 Cambiamos a columna para apilar los dos inputs verticalmente */
+    .set_field_container {
+        grid-column: 2;
+        grid-row: 1; /* Ocupará la primera celda grande a la derecha */
+        flex-direction: column; 
+        justify-content: center;
+        gap: 6px; /* Separación vertical entre peso y repeticiones */
+        width: 100%;
+        height: auto; /* Quitamos el height: 100% original */
+    }
+
+    /* 🔴 Cambiamos a columna para apilar los dos checkboxes verticalmente */
+    .set_checkbox_container {
+        grid-column: 2;
+        grid-row: 2; /* Ocupará la segunda celda grande a la derecha (debajo de los inputs) */
+        flex-direction: column; 
+        justify-content: center;
+        gap: 8px; /* Separación vertical entre los checkboxes */
+        width: 100%;
+        height: auto;
+        margin-right: 0;
+    }
+
+    /* Hacemos que cada elemento individual ocupe todo el ancho y se centre */
+    .set_field,
+    .set_reached_failure_checkbox {
+        max-width: none;
+        width: 100%; 
+        flex: none; /* Quitamos el flex: 1 del breakpoint anterior */
+        justify-content: center; /* Centra el contenido internamente */
+    }
+}
+
 @media (max-width: 1050px) {
     .exercice_manager_container {
         flex-direction: column;
@@ -593,11 +760,8 @@
         height: 50% !important;
         max-height: 100% !important;
     }
-    .set_row {
-        height: 25px;
-        min-height: 25px;
-    }
-    .set_field_btn, .set_field { margin-top: 2px; }
+
+    .set_field_btn, .set_field { padding-top: 1px; }
 }
 @media (max-width: 500px) {
     /* .exercice_manager_container {
