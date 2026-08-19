@@ -1,4 +1,25 @@
 # ==========================================
+# DATABASE (SQLITE)
+# Local database files and WAL logs
+# ==========================================
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+*.db-wal
+*.db-shm
+
+# ==========================================
+# ELECTRON & CACHE
+# Build caches and framework artifacts
+# ==========================================
+.electron-cache/
+frontend/.electron-cache/
+frontend/src/.electron-cache/
+.cache/
+out/
+
+# ==========================================
 # VIRTUAL ENVIRONMENTS (PYTHON)
 # Local project dependencies and environments
 # ==========================================

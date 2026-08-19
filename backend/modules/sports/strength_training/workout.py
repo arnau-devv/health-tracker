@@ -24,7 +24,7 @@ wrkt = {
         ]
     }
 }
-from datetime import datetime
+from datetime import date, datetime
 
 class SetLog:
     def __init__(self, weight: float, reps: int, reached_failure: bool):
@@ -140,11 +140,12 @@ class WorkoutExercise:
 
 class Workout:
     def __init__(self, date: str, satisfaction: str, intensity: str, exercises: list[WorkoutExercise]):
-        self._date: str = Workout._string_to_date_object(date)
+        self._date: datetime.date = Workout._string_to_date_object(date)
         self._satisfaction: str = satisfaction.strip().lower()
         self._intensity: str = intensity.strip().lower()
         self._exercises: list[WorkoutExercise] = exercises
-
+        self._created_at: datetime = datetime.now()
+        
     @property
     def date(self) -> str: return self._date
     @property

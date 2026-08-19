@@ -389,9 +389,13 @@ function validateWorkoutData(workout) {
             return
         } else {
             exercise.sets.forEach((set, i) => {
-                if (set.weight === 0 && set.reps === 0) {
-                    errors.push(`${capitalizeWords(exercise.name)} - set ${i + 1}: enter weight or reps.`)
-                }
+                const hasWeight = set.weight > 0
+                const hasReps = set.reps > 0
+
+                if (!hasWeight && !hasReps) errors.push(`${capitalizeWords(exercise.name)} - set ${i + 1}: enter weight and reps.`)
+                else if (!hasWeight) errors.push(`${capitalizeWords(exercise.name)} - set ${i + 1}: enter a weight greater than 0.`)
+                else if (!hasReps) errors.push(`${capitalizeWords(exercise.name)} - set ${i + 1}: enter reps greater than 0.`)
+                
             })
         }
     })
@@ -401,7 +405,6 @@ function validateWorkoutData(workout) {
 
 function capitalizeWords(text) {
     if (!text) return "";
-  
     return text
         .toLowerCase()
         .split(" ")
@@ -409,10 +412,6 @@ function capitalizeWords(text) {
         .join(" ");
 }
 
-// Example usage:
-const input = "hello my name is carlos";
-console.log(capitalizeWords(input)); 
-// Output: "Hello My Name Is Carlos"
 
 saveWorkoutBtn.addEventListener('click', () => {
     const workout = collectWorkoutData()

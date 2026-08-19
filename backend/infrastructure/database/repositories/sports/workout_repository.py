@@ -1,0 +1,75 @@
+from typing import Optional, Sequence
+from sqlalchemy import select
+from sqlalchemy.orm import Session
+from infrastructure.database.models.strength_training import (
+    WorkoutModel,
+    WorkoutExerciseModel,
+    WorkoutExerciseMuscleModel,
+    SetModel,
+    ExerciseModel,
+)
+
+
+class ExerciseNotFoundError(Exception):
+    """Raised when a workout references an exercise that doesn't exist in the catalog."""
+    pass
+
+
+class WorkoutRepository:
+    def __init__(self, session: Session):
+        self.session = session
+
+    def create(self, workout) -> WorkoutModel:
+        workout_exercises = []
+
+        for position, exercise in enumerate(workout.exercises):
+            master = self._get_master_exercise(exercise.name)
+
+            if master is None:
+                raise ExerciseNotFoundError(f"'{exercise.name}' is not in the exercise catalog. Save it first.")
+
+            sets = [
+                SetModel(
+                    set_number=i + 1,
+                    weight=s.weight,
+                    reps=s.reps,
+                    reached_failure=s.reached_failure,
+                )
+                for i, s in enumerate(exercise.sets)
+            ]
+
+            muscles_snapshot = [
+                WorkoutExerciseMuscleModel(name=m.name, involvement=m.involvement)
+                for m in master.muscles
+            ]
+
+            workout_exercises.append(
+                WorkoutExerciseModel(
+                    exercise_name=exercise.name,
+                    exercise_category=master.category,
+                    position=position,
+                    exercise_id=master.id,
+                    sets=sets,
+                    muscles=muscles_snapshot,
+                )
+            )
+
+        workout_model = WorkoutModel(
+            date=workout.date,
+            satisfaction=workout.satisfaction,
+            intensity=workout.intensity,
+            workout_exercises=workout_exercises,
+        )
+
+        self.session.add(workout_model)
+        self.session.commit()
+        self.session.refresh(workout_model)
+        return workout_model
+
+    def _get_master_exercise(self, name: str) -> Optional[ExerciseModel]:
+        stmt = select(ExerciseModel).where(ExerciseModel.name == name)
+        return self.session.scalars(stmt).first()
+
+    def get_all(self) -> Sequence[WorkoutModel]:
+        stmt = select(WorkoutModel)
+        return self.session.scalars(stmt).all()
