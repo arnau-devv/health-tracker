@@ -5,14 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mi App</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="components/sports/strength_training/strength_training.css">
-    <link rel="stylesheet" href="components/sports/strength_training/exercise_creator/exercise_creator.css">
-    <link rel="stylesheet" href="components/sports/strength_training/routine_creator/routine_creator.css">
-    <link rel="stylesheet" href="components/sports/strength_training/add_workout/add_workout.css">
-    <link rel="stylesheet" href="components/sports/strength_training/main_subview/strength_training_main_subview.css">
     <link rel="stylesheet" href="vendor/flatpickr/flatpickr.min.css">
     <link rel="stylesheet" href="components/shared/date_picker/date_picker.css">
+    <link rel="stylesheet" href="components/sports/strength_training/strength_training.css">
+    <link rel="stylesheet" href="components/sports/strength_training/add_workout/add_workout.css">
+    <link rel="stylesheet" href="components/sports/strength_training/main_subview/overview/overview.css">
+    <link rel="stylesheet" href="components/sports/strength_training/routine_creator/routine_creator.css">
+    <link rel="stylesheet" href="components/sports/strength_training/exercise_creator/exercise_creator.css">
+    <link rel="stylesheet" href="components/sports/strength_training/main_subview/strength_training_main_subview.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 
 <body spellcheck="false">
@@ -62,13 +63,78 @@
                 <div class="strength_training_internal_views_buttons">
                     <button class="strength_training_view_btn strength_training_main_view_btn selected" id="strength_training_main_view_btn">main view</button>
                     <button class="strength_training_view_btn strength_training_add_workout_view_btn" id="strength_training_add_workout_view_btn">add workout</button>
+                    <!-- <button class="strength_training_view_btn" id="strength_training_third_view_btn" data-title="Tercera Vista">tercera vista</button> -->
                 </div>
 
                 <!-- Strength trining internal views -->
                 <div class="strength_training_content_view" id="strength_training_content_view">
                     <!-- STRENGTH TRAINING MAIN VIEW -->
-                    <div class="strength_training_main_subview" id="strength_training_main_subview"></div>
-                    
+                    <div class="strength_training_main_subview" id="strength_training_main_subview">
+                        <!-- HEATMAP -->
+                        <div class="heatmap_container">
+
+                            <div class="heatmap_details_selector">
+                                
+                                <div class="heatmap_year_selector">
+                                    <button id="heatmap_prev_year">‹</button>
+                                    <span id="heatmap_year"></span>
+                                    <button id="heatmap_next_year">›</button>
+                                </div>
+                                
+                                <div class="radio_group">
+                                    <label class="radio_option">
+                                        <input type="radio" name="heatmap_mode" value="intensity" checked>
+                                        <span>Intensity</span>
+                                    </label>
+                                    <label class="radio_option">
+                                        <input type="radio" name="heatmap_mode" value="satisfaction">
+                                        <span>Satisfaction</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="heatmap_calendar" id="heatmapcalendar">
+
+                                <div class="heatmap_body">
+
+                                    <div class="heatmap_days">
+                                        <span></span>
+                                        <span>Mon</span>
+                                        <span></span>
+                                        <span>Wed</span>
+                                        <span></span>
+                                        <span>Fri</span>
+                                        <span></span>
+                                    </div>
+
+                                    <div class="heatmap_scroll">
+                                        <div class="heatmap_months" id="heatmap_months"></div>
+                                        <div class="heatmap" id="heatmap"></div>
+                                    </div>
+
+                                </div>
+                                <div class="heatmap_legend_container">
+                                    <p class="heatmap_summary" id="heatmap_summary">Total Workouts: <span id="total_workouts_heatmap_sumary"></span></p>
+                                    <div class="heatmap_legend">
+                                        <p class="heatmap_legend_label">Less</p>
+                                        <div class="heatmap_legend_colors">
+                                            <span class="heatmap_legend_color intensity_colors heatmap_legend_color_0"></span>
+                                            <span class="heatmap_legend_color intensity_colors heatmap_legend_color_1"></span>
+                                            <span class="heatmap_legend_color intensity_colors heatmap_legend_color_2"></span>
+                                            <span class="heatmap_legend_color intensity_colors heatmap_legend_color_3"></span>
+                                            <span class="heatmap_legend_color intensity_colors heatmap_legend_color_4"></span>
+                                            <span class="heatmap_legend_color intensity_colors heatmap_legend_color_5"></span>
+                                        </div>
+                                        <p class="heatmap_legend_label">More</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="general_progress_container"></div>
+                    </div>
+                    <!-- MEW WORKOUT VIEW -->
+                    <!-- <div class="second_view"></div> -->
                     <!-- MEW WORKOUT VIEW -->
                     <div class="strength_training_add_workout_subview" id="strength_training_add_workout_subview">
                         <!-- Exercises Manager -->
@@ -601,15 +667,17 @@
 
     <!-- TOAST POPUP -->
     <div class="toast_popup" id="toast_popup"></div>
-
+    <div class="heatmap_tooltip" id="heatmap_tooltip"></div>
 
     <script src="index.js"></script>
     <script src="vendor/flatpickr/flatpickr.min.js"></script>
     <script src="components/shared/date_picker/date_picker.js"></script>
     <script src="components/sports/strength_training/strength_training.js"></script>
     <script src="components/sports/strength_training/add_workout/add_workout.js"></script>
+    <script src="components/sports/strength_training/main_subview/overview/overview.js"></script>
+    <script src="components/sports/strength_training/routine_creator/routine_creator.js"></script>
     <script src="components/sports/strength_training/exercise_creator/exercise_creator.js"></script>
     <script src="components/sports/strength_training/main_subview/strength_training_main_subview.js"></script>
-    <script src="components/sports/strength_training/routine_creator/routine_creator.js"></script>
+
 </body>
 </html>

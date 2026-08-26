@@ -64,11 +64,55 @@
     max-width: 100%;
     margin-top: 4px;
 }
+.flatpickr-calendar.inline {
+    width: 100%;
+    max-width: 100%;
+    margin-top: 4px;
+}
+
+.flatpickr-innerContainer,
+.flatpickr-rContainer,
+.flatpickr-days,
+.dayContainer {
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+}
+.flatpickr-innerContainer {
+    padding: 5px;
+}
+
 
 .flatpickr-day {
+    width: 14.2857% !important;   /* 100% / 7 días */
+    max-width: 14.2857% !important;
+    flex-basis: 14.2857% !important;
+    width: 13.5% !important;   /* 100% / 7 días */
+    max-width: 13.5% !important;
+    flex-basis: 13.5% !important;
+    height: auto;
+    aspect-ratio: 1 / 1;          /* mantiene la celda cuadrada sin fijar px */
+    line-height: normal;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    margin: 0;
     color: #888888;
     border-radius: 2.5px;
     font-size: 11px;
+    border: 1px solid transparent;
+    transition:
+        background 0.3s ease,
+        color 0.3s ease,
+        border-color 0.3s ease,
+        transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+        opacity 0.3s ease;
+}
+.flatpickr-day {
+    color: #888888a4;
+    border-radius: 2.5px;
+    font-size: 10px;
     border: 1px solid transparent;
     transition:
         background 0.3s ease,
@@ -241,6 +285,7 @@ span.flatpickr-weekday {
 .flatpickr-current-month input.cur-year:hover {
     border-color: #3a3a3a;
 }
+
 
 .flatpickr-current-month input.cur-year:focus {
     outline: none;

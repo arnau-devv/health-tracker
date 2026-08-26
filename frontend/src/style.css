@@ -22,7 +22,7 @@ body {
     padding: 5px;
     gap: 0px;
     /* background: rgb(41, 41, 41); */
-        background: #1a1a1a;
+    background: #1a1a1a;
 
 }
 
@@ -364,8 +364,11 @@ button:focus {
     box-sizing: border-box;
     background: #1a1a1a;
     background: rgba(20, 20, 20);
+    
     /* border: 1px solid rgba(255, 255, 0, 0.572); */
 }
+
+
 
 .module-view {
     display: none;

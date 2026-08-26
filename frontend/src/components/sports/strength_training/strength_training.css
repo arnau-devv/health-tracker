@@ -10,8 +10,53 @@
     box-sizing: border-box;
     padding: 20px;
     gap: 10px;
+    border-radius: 5px;
     overflow: hidden;
+    /* border: 1px solid red; */
+    position: relative;
+        background: #141414; /* mismo tono base que ya usas en el resto de la app */
+    background: transparent;
+
 }
+
+/* La mancha de color vive en un ::before, DETRÁS del contenido real */
+.strength_training_vieooww::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+
+    background:
+        radial-gradient(
+            ellipse 140% 60% at 50% 120%,  /* centrado abajo, asomando desde fuera del borde */
+            rgba(180, 45, 45, 0.35) 0%,
+            rgba(120, 30, 30, 0.18) 35%,
+            rgba(20, 20, 20, 0) 70%
+        );
+    background-size: 200% 200%;
+    animation: strength_glow_shift 5s ease-in-out infinite;
+    /* background: transparent; */
+}
+
+@keyframes strength_glow_shift {
+    0% {
+        background-position: 40% 100%;
+        opacity: 0.7;
+    }
+    50% {
+        background-position: 60% 100%;
+        opacity: 1;
+    }
+    100% {
+        background-position: 40% 100%;
+        opacity: 0.7;
+    }
+}
+/* .strength_training_view > * {
+    position: relative;
+    z-index: 1;
+} */
 
 .strength_training_view.active {
     display: flex;
@@ -95,6 +140,7 @@ background: #272727;
     min-height: 0;
     box-sizing: border-box;
     background: #141414;
+    background: transparent;
     /* border: 1px solid green; */
     /* border-radius: 5px;   */
     

@@ -144,7 +144,19 @@ function updateCategoryCount(container) {
     if (countSpan) countSpan.textContent = container.children.length
 }
 
+// ============================================================================================
+//                                      ON LOADED EXERCICE - backend init
+// ============================================================================================
+// function onExerciseLoaded(payload) {
+//     showValidToast("Exercises loaded correctly.")
+//     addLoadedExercisesToList(payload);
+// }
 
+// function addLoadedExercisesToList(exercisesPayload) {
+//     for (const exerciseData of Object.values(exercisesPayload)) {
+//         this.addExerciseToList(exerciseData.name, exerciseData.category, exerciseData.muscles);
+//     }
+// }
 
 // ============================================================================================
 //                                      DRAG & DROP - EXERCISE SELECTION
@@ -362,13 +374,13 @@ function collectWorkoutData() {
         })
     })
 
-    console.log(selectedDate)
+    console.log("-------------------------------" + selectedDate)
     console.log(satisfactionBtn?.id.replace('workout_satisfaction_', '') || null)
     console.log(intensityBtn?.id.replace('workout_intensity_', '') || null)
     console.log(exercises)
 
     return {
-        date: selectedDate,
+        date: selectedDate ? formatLocalDate(selectedDate) : null,
         satisfaction: satisfactionBtn?.id.replace('workout_satisfaction_', '') || null,
         intensity: intensityBtn?.id.replace('workout_intensity_', '') || null,
         exercises,

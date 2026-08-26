@@ -87,6 +87,26 @@ strengthTrainingAddWorkoutBtn.addEventListener('click', () => {
 });
 
 
-
-
-
+// ============================================================================================
+//                             ON LOADED WORKOUT DATA  - backend init
+// ============================================================================================
+function onStrengthTrainingDataLoaded(payload) {
+    // ------ EXERCISES DATA    
+    //  {    
+    //     'lat pulldowns': {
+    //          'name': 'lat pulldowns', 
+    //          'category': 'pull', 'muscles': {
+    //                               'lats': 1.0, 
+    //                               'upper_back': 1.0, 
+    //                               'rear_deltoid': 1.0
+    //                              }
+    //                      }, 
+    // }
+    const exercises_data = Object.values(payload["exercises"] || {});
+    // workout_data = payload ["workouts"] not impemented yet on backend
+    exercises_data.forEach(exercise => {
+        addExerciseToList(exercise.name, exercise.category, exercise.muscles)
+        addSavedExerciseToCreator(exercise.name, exercise.category)
+    })
+    showValidToast("Loaded: Strength Training data")
+}

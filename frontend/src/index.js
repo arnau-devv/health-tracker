@@ -5,6 +5,8 @@
 // ============================================================================================
 
 let socket;
+let messageQueue = [];
+
 
 function connectSocket() {
     console.log('Intentando conectar al backend Python...');
@@ -12,6 +14,8 @@ function connectSocket() {
 
     socket.addEventListener('open', () => {
         console.log('¡Conectado al backend Python!');
+        messageQueue.forEach(msg => socket.send(msg));
+        messageQueue = [];
     });
 
     socket.addEventListener('error', (err) => {
@@ -35,18 +39,31 @@ function connectSocket() {
         // ----- WORKOUT
         if (data.type === 'workout_saved')     onWorkoutSaved()
         if(data.type === 'invalid_workout')    showErrorToast(data.payload.errors)
+            
+        // ----- WORKOUT
+        if (data.type === 'strength_training_data_loaded')  onStrengthTrainingDataLoaded(data.payload)
+        if (data.type === 'heatmap_data_loaded')            loadHeatMapCalendar(data.payload)
+
+        // if (data.type === 'exercises_loaded')  onExerciseLoaded(data.payload)
     });
 }
 
 connectSocket();
 
-
+// -- OLD
+// function sendToBackend(type, payload) {
+//     if (socket.readyState === WebSocket.OPEN) {
+//         socket.send(JSON.stringify({ type, payload }));
+//     }
+// }
 function sendToBackend(type, payload) {
+    const message = JSON.stringify({ type, payload });
     if (socket.readyState === WebSocket.OPEN) {
-        socket.send(JSON.stringify({ type, payload }));
+        socket.send(message);
+    } else {
+        messageQueue.push(message);
     }
 }
-
 
 // ============================================================================================
 //                                      SIDEBAR
@@ -94,20 +111,53 @@ document.querySelectorAll('.sidebar_module').forEach(btn => {
 
 // Sport sub-module selection (strength training, running, etc.)
 const strengthTrainingView = document.getElementById('strength_training_view')
+// --- OLD FUNCTION
+// const sports = document.querySelectorAll('.sport-module')
+// sports.forEach(btn => {
+//     btn.addEventListener('click', function(e) {
+//         e.stopPropagation(); // Stop the click from bubbling up to #sports_module_btn
+//         sports.forEach(b => b.classList.remove('active'));
+//         desactivateViews();
+        
+//         this.classList.add('active');
 
-const sports = document.querySelectorAll('.sport-module')
+//         const sportId = this.id;
+
+//     if (sportId === 'strength-training-module-btn' && !strengthTrainingView.classList.contains('active')) {            
+//             strengthTrainingView.classList.add('active')
+//             sendToBackend("get_strength_training_data", {})
+//         }
+    
+//         console.log('Sport selected:', sportId);
+//     });
+// });
+
+// ------------------------ SPORT MODULES - OPENING --------------------------
+const sports = document.querySelectorAll('.sport-module');
+
 sports.forEach(btn => {
     btn.addEventListener('click', function(e) {
-        e.stopPropagation(); // Stop the click from bubbling up to #sports_module_btn
+        e.stopPropagation();
+
+        // 1. Si el botón ya está activo, no hacemos nada y salimos
+        if (this.classList.contains('active')) {
+            return;
+        }
+
+        // 2. Si no estaba activo, desactivamos el resto y cambiamos de vista
         sports.forEach(b => b.classList.remove('active'));
         desactivateViews();
-        
-        this.classList.add('active');
 
+        this.classList.add('active');
         const sportId = this.id;
 
-        if (sportId === 'strength-training-module-btn') strengthTrainingView.classList.add('active')
-        
+        if (sportId === 'strength-training-module-btn') {
+            strengthTrainingView.classList.add('active');
+            sendToBackend("get_strength_training_data", {});
+            // sendToBackend("get_heatmap_data", {})
+        }
+
+
         console.log('Sport selected:', sportId);
     });
 });
@@ -126,8 +176,6 @@ function adaptToastPopupToHelperViews() {
                         routineCreatorView?.classList.contains('active');
     toastPopup.classList.toggle('helper_view_opened', isAnyViewOpen);
 }
-
-
 
 // ==================== ERROR
 const toastPopup = document.getElementById('toast_popup')

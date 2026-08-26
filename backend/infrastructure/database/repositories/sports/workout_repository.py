@@ -1,5 +1,6 @@
 from typing import Optional, Sequence
 from sqlalchemy import select
+from datetime import date
 from sqlalchemy.orm import Session
 from infrastructure.database.models.strength_training import (
     WorkoutModel,
@@ -73,3 +74,35 @@ class WorkoutRepository:
     def get_all(self) -> Sequence[WorkoutModel]:
         stmt = select(WorkoutModel)
         return self.session.scalars(stmt).all()
+    
+    def get_heatmap_data(self, year: str) -> list[dict]:
+        year_int = int(year)
+        start = date(year_int, 1, 1)
+        end = date(year_int + 1, 1, 1)
+
+        stmt = select(
+            WorkoutModel.date,
+            WorkoutModel.satisfaction,
+            WorkoutModel.intensity
+        ).where(
+            WorkoutModel.date >= start,
+            WorkoutModel.date < end
+        )
+
+        rows = self.session.execute(stmt).all()
+        
+        # return [
+        #     {
+        #         "date": str(row.date),  # "2025-03-15"
+        #         "satisfaction": row.satisfaction,
+        #         "intensity": row.intensity
+        #     }
+        #     for row in rows
+        # ]
+        data = []
+        print(f"Loading {year_int} workouts for heatmap")
+        for row in rows:
+            d = { "date": str(row.date), "satisfaction": row.satisfaction, "intensity": row.intensity }
+            print(d)
+            data.append(d)
+        return data

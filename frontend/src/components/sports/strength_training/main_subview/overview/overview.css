@@ -1,0 +1,358 @@
+/* ════════════════════════════════════════════════════════════════════
+   HEATMAP
+   ════════════════════════════════════════════════════════════════════ */
+
+/* ---------------------------------------------------------------------
+   Container and overall layout
+   --------------------------------------------------------------------- */
+.heatmap_container {
+    width: 100%;
+    height: auto;
+    border-radius: 3px;
+    background: rgba(24, 24, 24, 0.55);
+    padding: 10px;
+    box-sizing: border-box;
+    overflow: hidden; /* ← no scroll here */
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+    max-width: 1200px;
+    /* border: 1px solid rgba(255, 0, 0, 0.25); */
+}
+.heatmap_details_selector {
+    height: 100%;
+    flex-shrink: 0;
+    width: 120px;
+    /* border: 1px solid rgba(137, 43, 226, 0.05); */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 15px;
+}
+
+.heatmap_calendar {
+    width: 100%;
+    min-width: 0; /* ← key */
+    height: auto;
+    /* border: 1px solid rgba(9, 255, 0, 0.05); */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 5px;
+}
+
+.heatmap {
+    min-width: 0; /* ← just in case */
+    display: grid;
+    grid-template-rows: repeat(7, 14px);
+    grid-auto-columns: 14px;
+    grid-auto-flow: column;
+    row-gap: 3px;      /* separación entre filas (dentro de cada semana) */
+    column-gap: 3px;   /* separación entre columnas (entre semanas) */
+    width: 100%;
+    height: fit-content;
+    padding-bottom: 5px;
+    /* overflow-x: auto; */
+    /* overflow-y: hidden; */
+    /* border: 1px solid rgba(255, 255, 0, 0.05); */
+}
+
+/* ---------------------------------------------------------------------
+   Year selector
+   --------------------------------------------------------------------- */
+.heatmap_year_selector {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: auto;
+    flex-shrink: 0;
+    background: #202020;
+    border-radius: 3px;
+    padding: 3px;
+    width: 100px;
+    gap: 5px;
+}
+
+#heatmap_prev_year, #heatmap_next_year {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 17px;
+    height: 17px;
+    background: none;
+    border: none;
+    border-radius: 3px;
+    color: #5a5a5a;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    user-select: none;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    transition: background 0.12s ease, color 0.12s ease;
+}
+
+#heatmap_prev_year:hover, #heatmap_next_year:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #e5e5e5;
+}
+
+#heatmap_year {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    color: #717171;
+    user-select: none;
+    flex-shrink: 0;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+    margin: 0;
+    padding: 0;
+    user-select: none;
+    transition: color 0.15s ease;
+}
+
+
+/* ---------------------------------------------------------------------
+   Variety selection - Intensity - satisfaction
+   --------------------------------------------------------------------- */
+.radio_group {
+    width: 100px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.radio_option {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.radio_option input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    margin: 0;
+    width: 12px;
+    height: 12px;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    /* border: 1.5px solid #5a5a5a; */
+    border-radius: 3px;
+    background-color: #202020;
+    background-image: radial-gradient(circle, var(--fill-color, transparent) 0%, var(--fill-color, transparent) 100%);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 0% 0%;
+    cursor: pointer;
+    transition: border-color 0.2s ease, background-size 0.35s ease;
+}
+
+.radio_option input[value="intensity"] { --fill-color: #e33b3b; }
+.radio_option input[value="satisfaction"] {  --fill-color: #3b82e3; }
+.radio_option input[type="radio"]:checked { border-color: var(--fill-color); background-size: 100% 100%; }
+.radio_option span { color: #4a4a4a; transition: color 0.2s ease; }
+.radio_option input[value="intensity"]:checked + span { color: #959494; }
+.radio_option input[value="satisfaction"]:checked + span {color: #959494; }
+/* ---------------------------------------------------------------------
+   Grid cells
+   --------------------------------------------------------------------- */
+.heatmap-cell {
+    width: 14px;
+    height: 14px;
+    border-radius: 2px;
+    background: #1e1e1e;
+    transition: background 0.3s ease, transform 0.1s ease-in;
+    cursor: default;
+}
+.heatmap-cell.has-workout:hover { cursor: pointer; }
+.heatmap-cell.has-workout:active { transform: scale(0.95); }
+.heatmap-cell:hover { background: #424242; }
+
+/* ---------------------------------------------------------------------
+    Cell tooltip
+--------------------------------------------------------------------- */
+
+.heatmap_tooltip {
+    position: fixed;
+    background: #181818;
+    color: #bbbbbb;
+    font-size: 10px;
+    padding: 4px 8px;
+    border-radius: 3px;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    pointer-events: none;
+    opacity: 0;
+    transform: translate(-50%, -100%); /* centra horizontalmente y sube por completo encima del punto */
+    transition: opacity 0.12s ease;
+    z-index: 1000;
+}
+
+.heatmap_tooltip.visible {
+    opacity: 1;
+}
+
+
+
+/* ---------------------------------------------------------------------
+   Internal structure: days, months and scroll
+   --------------------------------------------------------------------- */
+.heatmap_body {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 6px;
+    width: 100%;
+    min-width: 0;
+}
+
+.heatmap_days {
+    display: grid;
+    grid-template-rows: repeat(7, 14px);
+    gap: 3px;
+    flex-shrink: 0;
+    width: 22px;
+    padding-top: 19px;   /* antes 20px — ahora coincide exactamente con .heatmap_months */
+}
+
+.heatmap_days span {
+    font-size: 9px;
+    font-weight: 600;
+    color: #717171;
+    line-height: 12px;
+    text-align: right;
+}
+
+.heatmap_scroll {
+    width: 100%;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.heatmap_months {
+    height: 12px;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 14px;
+    gap: 3.1px;
+    padding-bottom: 4px !important;
+}
+
+.heatmap_month_label {
+    font-size: 10px;
+    font-weight: 600;
+    color: #717171;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+    grid-row: 1;
+}
+
+.heatmap-cell.empty {
+    background: transparent;
+    cursor: default;
+    pointer-events: none;
+}
+
+/* ---------------------------------------------------------------------
+   Custom scrollbar
+   --------------------------------------------------------------------- */
+.heatmap_scroll::-webkit-scrollbar { height: 3px; }
+.heatmap_scroll::-webkit-scrollbar-track { background: transparent; }
+.heatmap_scroll::-webkit-scrollbar-thumb:hover { background: #4a4a4a; }
+.heatmap_scroll::-webkit-scrollbar-thumb { background: #3a3a3a; border-radius: 3px; }
+
+/* ---------------------------------------------------------------------
+   Legend
+   --------------------------------------------------------------------- */
+.heatmap_legend_container {
+    width: 100%;
+    height: 20px;
+    /* border: 1px solid yellow; */
+    padding-left: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+.heatmap_legend {
+    width: auto;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.heatmap_legend_label {
+    color: #7a7a7a;
+    font-size: 8px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    padding: 0px 5px;
+}
+#total_workouts_heatmap_sumary {
+    color: #a5a5a5;
+    font-weight: 600;
+}
+.heatmap_summary {
+    color: #545454;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    padding: 0px 5px;
+}
+.heatmap_legend_colors {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+.heatmap_legend_color{
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    /* border: 1px solid yellow; */
+}
+
+.heatmap_legend_color {transition: background 0.3s ease;}
+.heatmap_legend_color_0 { background: #1e1e1e; }
+.heatmap_legend_color_1.intensity_colors { background: #371b1b; }
+.heatmap_legend_color_2.intensity_colors { background: #592222; }
+.heatmap_legend_color_3.intensity_colors { background: #862727; }
+.heatmap_legend_color_4.intensity_colors { background: #bd2828; }
+.heatmap_legend_color_5.intensity_colors { background: #e33b3b; }
+
+.heatmap_legend_color_1.satisfaction_colors { background: #1b2337; }
+.heatmap_legend_color_2.satisfaction_colors { background: #222d59; }
+.heatmap_legend_color_3.satisfaction_colors { background: #273a86; }
+.heatmap_legend_color_4.satisfaction_colors { background: #2850bd; }
+.heatmap_legend_color_5.satisfaction_colors { background: #3b6fe3; }
+
+
+
+/* ═════════════════════════════════════════════════════════════════════════════════════════════
+   General Progress
+   ═════════════════════════════════════════════════════════════════════════════════════════════ */
+.general_progress_container {
+    width: 500px;
+    height: 250px;
+    background: rgba(24, 24, 24, 0.55);
+    border-radius: 3px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+}
