@@ -78,7 +78,6 @@
     transform: translateX(-30px);
 }
 
-/* Desplazamiento hacia la derecha (cuando vuelves a Main View) */
 .strength_training_main_tittle.slide-right {
     opacity: 0;
     transform: translateX(30px);

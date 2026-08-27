@@ -40,16 +40,10 @@ routineCreationViewBtn.addEventListener('click', () => {
 
 
 // ============================================================================================
-//                          STRENGTH TRAINING — INTERNAL VIEWS
+//                          STRENGTH TRAINING — INTERNAL VIEWS SWITCHING
 // ============================================================================================
-
-const strengthTrainingMainViewBtn = document.getElementById('strength_training_main_view_btn');
-const strengthTrainingAddWorkoutBtn = document.getElementById('strength_training_add_workout_view_btn');
-
-const strengthTrainingMainView = document.getElementById('strength_training_main_subview');
-const strengthTrainingAddWorkoutView = document.getElementById('strength_training_add_workout_subview');
-
 const mainTitle = document.querySelector('.strength_training_main_tittle');
+
 function changeTitleAnimated(newText, directionClass) {
     if (mainTitle.textContent === newText) return;
 
@@ -61,29 +55,33 @@ function changeTitleAnimated(newText, directionClass) {
     }, 300); 
 }
 
-// --- EVENTOS ---
-const saveWorkoutBtn = document.getElementById('save_workout_btn')
+const viewButtons = document.querySelectorAll('.strength_training_view_btn');
+const subviews = document.querySelectorAll('.strength_training_content_view > div');
+const saveWorkoutBtn = document.getElementById('save_workout_btn');
 
-strengthTrainingMainViewBtn.addEventListener('click', () => {
-    strengthTrainingAddWorkoutBtn.classList.remove('selected');
-    strengthTrainingMainViewBtn.classList.add('selected');
-    saveWorkoutBtn.classList.remove('is_active');
+let currentViewIndex = 0;
 
-    strengthTrainingMainView.style.transform = 'translateX(0%)';
-    strengthTrainingAddWorkoutView.style.transform = 'translateX(0%)';
+viewButtons.forEach((btn, index) => {
+    btn.addEventListener('click', () => {
+        if (index === currentViewIndex) return;
 
-    changeTitleAnimated('Strength Training', 'slide-right');
-});
+        // Tittle direction & changing
+        const directionClass = index > currentViewIndex ? 'slide-left' : 'slide-right';
+        const newTitle = btn.getAttribute('data-title') || btn.textContent;
+        changeTitleAnimated(newTitle, directionClass);
 
-strengthTrainingAddWorkoutBtn.addEventListener('click', () => {
-    strengthTrainingAddWorkoutBtn.classList.add('selected');
-    strengthTrainingMainViewBtn.classList.remove('selected');
-    saveWorkoutBtn.classList.add('is_active');
+        // Moove subviews based on actual index
+        subviews.forEach(subview => { subview.style.transform = `translateX(-${index * 100}%)`; });
 
-    strengthTrainingMainView.style.transform = 'translateX(-100%)';
-    strengthTrainingAddWorkoutView.style.transform = 'translateX(-100%)';
+        // Update buttons visual states
+        viewButtons.forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
 
-    changeTitleAnimated('New Workout', 'slide-left');
+        // 4. Lógica específica según la vista activa (ejemplo: mostrar botón guardar)
+        // saveWorkoutBtn.classList.toggle('is_active', btn.id === 'strength_training_add_workout_view_btn');
+
+        currentViewIndex = index;
+    });
 });
 
 
@@ -96,14 +94,13 @@ function onStrengthTrainingDataLoaded(payload) {
     //     'lat pulldowns': {
     //          'name': 'lat pulldowns', 
     //          'category': 'pull', 'muscles': {
-    //                               'lats': 1.0, 
-    //                               'upper_back': 1.0, 
-    //                               'rear_deltoid': 1.0
+    //                              'lats': 1.0, 
+    //                              'upper_back': 1.0, 
+    //                              'rear_deltoid': 1.0
     //                              }
     //                      }, 
     // }
     const exercises_data = Object.values(payload["exercises"] || {});
-    // workout_data = payload ["workouts"] not impemented yet on backend
     exercises_data.forEach(exercise => {
         addExerciseToList(exercise.name, exercise.category, exercise.muscles)
         addSavedExerciseToCreator(exercise.name, exercise.category)
