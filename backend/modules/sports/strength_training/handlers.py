@@ -1,9 +1,11 @@
 import json
 from .exercise import Exercise
+from pprint import pprint
 from infrastructure.database.database import Session
 from .workout import Workout, WorkoutExercise, SetLog
-from infrastructure.database.repositories.sports.exercise_repository import ExerciseRepository
+from modules.sports.strength_training.data_loader import StrengthTrainingdataLoader
 from infrastructure.database.repositories.sports.workout_repository import WorkoutRepository
+from infrastructure.database.repositories.sports.exercise_repository import ExerciseRepository
 
 
 async def handle_save_exercise(websocket, payload):
@@ -119,10 +121,24 @@ async def handle_get_heatmap_data(websocket, payload):
 # [ { "date": "2025-03-15", "satisfaction": "great", "intensity": "high" },
 #   { "date": "2025-03-17", "satisfaction": "neutral", "intensity": "moderate" }
 # ]
-        
 
-
-
+async def handle_get_general_progress_data(websocket, payload) -> list[dict]:
+    # 1 - Get Raw Data
+    # 2 - Transform raw_data to iterable data for chart
+    general_progress = {}
+    with Session() as session:
+        workout_repo = WorkoutRepository(session)
+        push_raw_data = workout_repo.get_data_by_category("push")
+        pull_raw_data = workout_repo.get_data_by_category("pull")
+        legs_raw_data = workout_repo.get_data_by_category("legs")
+        core_raw_data = workout_repo.get_data_by_category("core")
+    general_progress["push"] = StrengthTrainingdataLoader.load_progress(push_raw_data)
+    general_progress["pull"] = StrengthTrainingdataLoader.load_progress(pull_raw_data)
+    general_progress["legs"] = StrengthTrainingdataLoader.load_progress(legs_raw_data)
+    general_progress["core"] = StrengthTrainingdataLoader.load_progress(core_raw_data)
+    pprint(general_progress)
+    pprint("funciona!")
+    ...
 
 """ HANDLERS ANTIGUOS HARDCODEADOS 
 

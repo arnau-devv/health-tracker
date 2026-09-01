@@ -16,4 +16,11 @@
     flex-shrink: 0; /* Evita que las vistas se encojan, obligando a que cada una mida 100% */
     transition: transform 0.4s ease-in-out; /* Esta es la magia de la animación (0.4 segundos) */
     gap: 10px;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
+.strength_training_main_subview::-webkit-scrollbar {display: none;}
+.strength_training_main_subview::-webkit-scrollbar { width: 3px; }
+.strength_training_main_subview::-webkit-scrollbar-track { background: transparent; }
+.strength_training_main_subview::-webkit-scrollbar-thumb:hover { background: #4a4a4a; }
+.strength_training_main_subview::-webkit-scrollbar-thumb { background: #3a3a3a; border-radius: 3px; }

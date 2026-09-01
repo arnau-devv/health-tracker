@@ -128,7 +128,8 @@ const heatmapYearSpan = document.getElementById('heatmap_year')
 const heatmapPrevYear = document.getElementById('heatmap_prev_year')
 const heatmapNextYear = document.getElementById('heatmap_next_year')
 let currentYear = new Date().getFullYear();
-sendToBackend("get_heatmap_data", { year: String(currentYear) });
+// sendToBackend("get_heatmap_data", { year: String(currentYear) });
+
 initHeatmap(currentYear)
 heatmapYearSpan.textContent = Number(currentYear);
 
@@ -180,3 +181,69 @@ heatmapContainer.addEventListener('mouseout', (e) => {
 // =========================================================================================================================
 //                                              GENERAL PROGROGRESS CHART
 // =========================================================================================================================
+const generalProgressChartsButtons = document.querySelectorAll('.general_progress_chart_selector_btn')
+const generalProgressCanvas = document.querySelectorAll('.general_progress_canvas')
+let currentGeneralProgressChartIndex = 0;
+
+generalProgressChartsButtons.forEach((btn, index) => {
+    btn.addEventListener('click', () => {
+        if (index === currentGeneralProgressChartIndex) return;
+
+        generalProgressCanvas.forEach(canvas => { canvas.style.transform = `translateX(-${index * 100}%)`; });
+        generalProgressChartsButtons.forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected')
+
+        currentGeneralProgressChartIndex = index;
+    })
+})
+
+
+new Chart(document.getElementById('general_progress_chart'), {
+  type: 'bar',
+  data: {
+    labels: ['1','2','3','4','5','6','7','8','9','10','11','12',
+            '13','14','15','16','17','18','19','20','21','22','23','24'],            
+    datasets: [{
+        label: 'Progreso',
+        data: [12, 19, 3, 5, 2, 3, 10, 8, 15, 6, 9, 4, 11, 18, 7, 4, 6, 8, 13, 16, 10, 5, 12, 7]
+    }]
+  },
+  options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: { mode: 'index', intersect: false },
+            plugins: {
+                legend: {
+                    display: false,
+                    position: 'bottom',
+                    labels: {
+                        color: '#7a7a7a',
+                        font: { size: 10 },
+                        boxWidth: 8,
+                        boxHeight: 8,
+                        usePointStyle: true,
+                    }
+                },
+                tooltip: {
+                    backgroundColor: '#181818',
+                    titleColor: '#bbbbbb',
+                    bodyColor: '#bbbbbb',
+                    borderColor: '#292929',
+                    borderWidth: 1,
+                    padding: 8,
+                    boxPadding: 4,
+                }
+            },
+            scales: {
+                x: {
+                    grid: { display: false, drawOnChartArea: false, drawBorder: false },
+                    ticks: { color: '#5a5a5a', font: { size: 9 }, display: false }
+                },
+                y: {
+                    stacked: true,
+                    grid: { display: false, color: 'rgba(255,255,255,0.04)', drawBorder: false },
+                    ticks: { color: '#5a5a5a', font: { size: 9 }, display: false }
+                }
+            }
+        }
+});

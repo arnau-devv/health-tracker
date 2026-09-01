@@ -43,7 +43,9 @@ function connectSocket() {
         // ----- WORKOUT
         if (data.type === 'strength_training_data_loaded')  onStrengthTrainingDataLoaded(data.payload)
         if (data.type === 'heatmap_data_loaded')            loadHeatMapCalendar(data.payload)
-
+        
+        // ----- OVERVIEW
+        if (data.type === 'general_progress_data_loaded')   renderGeneralProgressChart(document.getElementById('general_progress_chart'), data.payload)
         // if (data.type === 'exercises_loaded')  onExerciseLoaded(data.payload)
     });
 }
@@ -154,7 +156,8 @@ sports.forEach(btn => {
         if (sportId === 'strength-training-module-btn') {
             strengthTrainingView.classList.add('active');
             sendToBackend("get_strength_training_data", {});
-            // sendToBackend("get_heatmap_data", {})
+            sendToBackend("get_heatmap_data", { year: String(currentYear) });
+            sendToBackend("get_general_progress_data", {})
         }
 
 

@@ -1,5 +1,5 @@
 from typing import Optional, Sequence
-from sqlalchemy import select
+from sqlalchemy import select, func
 from datetime import date
 from sqlalchemy.orm import Session
 from infrastructure.database.models.strength_training import (
@@ -106,3 +106,45 @@ class WorkoutRepository:
             print(d)
             data.append(d)
         return data
+    
+    def get_data_by_category(self, category: str) -> list[dict]:
+        stmt = (
+            select(
+                WorkoutModel.date,
+                WorkoutExerciseModel.exercise_name,
+                SetModel.set_number,
+                SetModel.weight,
+                SetModel.reps,
+            )
+            .join(WorkoutExerciseModel, WorkoutExerciseModel.workout_id == WorkoutModel.id)
+            .join(SetModel, SetModel.workout_exercise_id == WorkoutExerciseModel.id)
+            .where(WorkoutExerciseModel.exercise_category == category)
+            .order_by(
+                WorkoutExerciseModel.exercise_name.asc(),
+                WorkoutModel.date.asc(),
+                SetModel.set_number.asc(),
+            )
+        )
+        rows = self.session.execute(stmt).all()
+
+        return [
+            {
+                "date": row.date.isoformat(),
+                "exercise_name": row.exercise_name,
+                "set_number": row.set_number,
+                "weight": row.weight,
+                "reps": row.reps,
+            }
+            for row in rows
+        ]
+
+        # Example of returned dicc:
+        # [
+        #     {"date": "2026-06-03", "exercise_name": "bench press", "set_number": 1, "weight": 45.0, "reps": 12},
+        #     {"date": "2026-06-03", "exercise_name": "bench press", "set_number": 2, "weight": 40.0, "reps": 12},
+        #     {"date": "2026-06-03", "exercise_name": "bench press", "set_number": 3, "weight": 40.0, "reps": 8},
+        #     {"date": "2026-06-10", "exercise_name": "bench press", "set_number": 1, "weight": 47.5, "reps": 12},
+        #     {"date": "2026-06-10", "exercise_name": "bench press", "set_number": 2, "weight": 42.5, "reps": 10},
+        #     {"date": "2026-06-03", "exercise_name": "overhead press", "set_number": 1, "weight": 25.0, "reps": 10},
+        # ]
+    

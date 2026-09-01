@@ -62,7 +62,7 @@
                 <h1 class="strength_training_main_tittle">Strength Training</h1>
                 <div class="strength_training_internal_views_buttons">
                     <button class="strength_training_view_btn strength_training_main_view_btn selected" id="strength_training_main_view_btn" data-title="Strength Training">Strength Training</button>
-                    <button class="strength_training_view_btn" id="strength_training_third_view_btn" data-title="Tercera Vista">tercera vista</button>
+                    <button class="strength_training_view_btn" id="strength_training_analysis_btn" data-title="Analysis">analysis</button>
                     <button class="strength_training_view_btn strength_training_add_workout_view_btn" id="strength_training_add_workout_view_btn" data-title="Add Workout">Add Workout</button>
                 </div>
 
@@ -130,9 +130,25 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="general_progress_container"></div>
+                        
+                        <!--- GENERAL PROGRESS CHART -->
+                        <div class="general_progress_container">
+                            <div class="general_progress_header">
+                                <div class="general_progress_chart_selector">
+                                    <button class="general_progress_chart_selector_btn selected" id="general_progress_chart_selector_btn" data-category="push">PUSH</button>
+                                    <button class="general_progress_chart_selector_btn" id="general_progress_chart_selector_btn" data-category="pull">PULL</button>
+                                    <button class="general_progress_chart_selector_btn" id="general_progress_chart_selector_btn" data-category="push">LEGS</button>
+                                </div>
+                            </div>
+                            <div class="general_progress_chart_contents">
+                                <canvas class="general_progress_canvas" id="general_progress_chart">1</canvas>
+                                <canvas class="general_progress_canvas" id="general_progress_chart_overlay">2</canvas>
+                                <canvas class="general_progress_canvas" id="general_progress_chart_hover">3</canvas>
+                            </div>
+                        </div>
+                    
                     </div>
+                    
                     <!-- MEW WORKOUT VIEW -->
                     <div class="second_view"></div>
                     <!-- MEW WORKOUT VIEW -->
@@ -671,6 +687,7 @@
 
     <script src="index.js"></script>
     <script src="vendor/flatpickr/flatpickr.min.js"></script>
+    <script src="vendor/chartjs/chart.umd.js"></script>
     <script src="components/shared/date_picker/date_picker.js"></script>
     <script src="components/sports/strength_training/strength_training.js"></script>
     <script src="components/sports/strength_training/add_workout/add_workout.js"></script>
