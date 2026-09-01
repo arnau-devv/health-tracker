@@ -112,127 +112,26 @@ async def handle_get_heatmap_data(websocket, payload):
         workout_repo = WorkoutRepository(session)
         workouts: list[dict] = workout_repo.get_heatmap_data(selected_year)
         
-        print("heatmap data loaded")
-        print(json.dumps(workouts, indent=4))
-        await websocket.send(json.dumps({
-            "type": "heatmap_data_loaded",
-            "payload": workouts,
-        }))
+    print("heatmap data loaded")
+    print(json.dumps(workouts, indent=4))
+    await websocket.send(json.dumps({
+        "type": "heatmap_data_loaded",
+        "payload": workouts,
+    }))
 # [ { "date": "2025-03-15", "satisfaction": "great", "intensity": "high" },
 #   { "date": "2025-03-17", "satisfaction": "neutral", "intensity": "moderate" }
 # ]
 
 async def handle_get_general_progress_data(websocket, payload) -> list[dict]:
-    # 1 - Get Raw Data
-    # 2 - Transform raw_data to iterable data for chart
     general_progress = {}
     with Session() as session:
         workout_repo = WorkoutRepository(session)
-        push_raw_data = workout_repo.get_data_by_category("push")
-        pull_raw_data = workout_repo.get_data_by_category("pull")
-        legs_raw_data = workout_repo.get_data_by_category("legs")
-        core_raw_data = workout_repo.get_data_by_category("core")
-    general_progress["push"] = StrengthTrainingdataLoader.load_progress(push_raw_data)
-    general_progress["pull"] = StrengthTrainingdataLoader.load_progress(pull_raw_data)
-    general_progress["legs"] = StrengthTrainingdataLoader.load_progress(legs_raw_data)
-    general_progress["core"] = StrengthTrainingdataLoader.load_progress(core_raw_data)
-    pprint(general_progress)
-    pprint("funciona!")
-    ...
-
-""" HANDLERS ANTIGUOS HARDCODEADOS 
-
-# ------------ NEW EXERCISE
-    if msg_type == "save_exercise":
-        # ---  Exercise validation
-        errors: list = Exercise.validate(payload)
-        if  errors:
-            await websocket.send(json.dumps({"type": "invalid_exercise", "payload": {"errors": errors}}))
-            return
-        
-        exercise: object[Exercise] = Exercise(name = payload["name"], muscles = payload["muscles"], bodyweighted = payload["bodyweighted"])
-
-        # --- Transaaction
-        try: 
-            # Database Insertion 
-            with Session() as session:
-                repo = ExerciseRepository(session)
-                saved_exercise = repo.create(
-                    name=exercise.name,
-                    category=exercise.category,
-                    bodyweighted=exercise.bodyweighted,
-                    muscles_data=exercise.muscles
-                )
-            print(f"\n---- INSETRED INTO TABLE exercise VALUES (\n\tname={exercise.name})\n\tcategory={exercise.category}\n\tbodyweighted={exercise.bodyweighted}\n\tmuscles={exercise.muscles}\n)")
-        
-            # Message for frontend -> Transaction done
-            await websocket.send(json.dumps({
-                "type": "exercise_saved",
-                "payload": {"name": exercise.name, "muscles": exercise.muscles, "bodyweighted": exercise.bodyweighted, "category": exercise.category}
-            }))
-            
-            return
-        
-        except Exception as e:
-            # ERROR MANAGING -> Message for frontend -> Transaction  failed
-            print(f"Error al guardar ejercicio en BD -> {e}")
-            await websocket.send(json.dumps({
-                "type": "invalid_exercise",
-                "payload": {"errors": ["Could not save the exercise to the database."]}
-            }))
-
-        return
-        
+        for category in ("push", "pull", "legs", "core"):
+            raw_data = workout_repo.get_data_by_category(category)
+            general_progress[category] = StrengthTrainingdataLoader.load_progress(raw_data)
+    clean_data = StrengthTrainingdataLoader.build_general_progress_results(general_progress)
+    await websocket.send(json.dumps({
+        "type": "general_progress_data_loaded",
+        "payload": clean_data,
+    }))
     
-    # ------------ NEW WORKOUT
-    if msg_type == "save_workout":
-        # --- Workout validation 
-        errors: list = Workout.validate(payload)
-        if errors:
-            await websocket.send(json.dumps({
-                "type": "invalid_workout",
-                "payload": {"errors": errors}
-            }))
-            return
-        
-        exercises: list[WorkoutExercise] = []
-        for exercise_data in payload["exercises"]:
-            name: str = exercise_data["name"]
-            # set_data - {'weight': 45, 'reps': 12, 'reached_failure': False},
-            sets: list [SetLog] = [SetLog(**set_data) for set_data in exercise_data["sets"]]
-            exercises.append(WorkoutExercise(name = name, sets = sets))
-            
-        workout: object[Workout] = Workout(
-            date = payload["date"],
-            satisfaction = payload["satisfaction"],
-            intensity = payload["intensity"],
-            exercises = exercises
-        )
-        
-        # --- Transaction
-        try: 
-            with Session() as session:
-                repo = WorkoutRepository(session)
-                saved_exercise = repo.create(workout)
-
-                # print(f"\nWorkout saved -> Date: {payload['date']} | Satisfaction: {payload['satisfaction']} | Intensity: {payload['intensity']} | Exercises: {len(exercises)}", flush=True)
-                print(f"\n---- INSETRED INTO TABLE workout VALUES (\n\tdate: = {workout.date})\n\tsatiscatction={workout.satisfaction}\n\tintensity={workout.intensity}\n\texercises=overengineering print\n\tcreated_at: {workout._created_at}\n)")
-
-            # Message for frontend -> Transaction done
-            await websocket.send(json.dumps({
-                "type": "workout_saved",
-                "payload": {}
-            }))    
-            return
-        
-        except Exception as e:
-            # Error managing -> Message for frontend -> Transaction  failed
-            print(f"Error saving workout into database -> {e}", flush=True)
-            await websocket.send(json.dumps({
-                "type": "invalid_workout",
-                "payload": {"errors": ["Could not save the workout to the database."]}
-            }))
-        
-        return
-
-"""

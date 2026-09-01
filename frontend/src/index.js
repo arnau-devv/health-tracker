@@ -45,7 +45,7 @@ function connectSocket() {
         if (data.type === 'heatmap_data_loaded')            loadHeatMapCalendar(data.payload)
         
         // ----- OVERVIEW
-        if (data.type === 'general_progress_data_loaded')   renderGeneralProgressChart(document.getElementById('general_progress_chart'), data.payload)
+        if (data.type === 'general_progress_data_loaded')   onGeneralProgressDataLoaded(data.payload)
         // if (data.type === 'exercises_loaded')  onExerciseLoaded(data.payload)
     });
 }
@@ -111,30 +111,9 @@ document.querySelectorAll('.sidebar_module').forEach(btn => {
     });
 });
 
-// Sport sub-module selection (strength training, running, etc.)
-const strengthTrainingView = document.getElementById('strength_training_view')
-// --- OLD FUNCTION
-// const sports = document.querySelectorAll('.sport-module')
-// sports.forEach(btn => {
-//     btn.addEventListener('click', function(e) {
-//         e.stopPropagation(); // Stop the click from bubbling up to #sports_module_btn
-//         sports.forEach(b => b.classList.remove('active'));
-//         desactivateViews();
-        
-//         this.classList.add('active');
-
-//         const sportId = this.id;
-
-//     if (sportId === 'strength-training-module-btn' && !strengthTrainingView.classList.contains('active')) {            
-//             strengthTrainingView.classList.add('active')
-//             sendToBackend("get_strength_training_data", {})
-//         }
-    
-//         console.log('Sport selected:', sportId);
-//     });
-// });
 
 // ------------------------ SPORT MODULES - OPENING --------------------------
+const strengthTrainingView = document.getElementById('strength_training_view')
 const sports = document.querySelectorAll('.sport-module');
 
 sports.forEach(btn => {
@@ -220,4 +199,110 @@ function showValidToast(message) {
     toastTimer = setTimeout(() => {
         toastPopup.classList.remove('valid')
     }, 3000)
+}
+
+// ============================================================================================
+//                               GENERAL PROGRESS CHARTS (CHART.JS)
+// ============================================================================================
+
+const categoryCharts = {};
+const categoryCanvasMap = {
+    'push': 'push_general_progress_chart',
+    'pull': 'pull_general_progress_chart',
+    'legs': 'legs_general_progress_chart',
+    'core': 'core_general_progress_chart'
+};
+
+function onGeneralProgressDataLoaded(payload) {
+    Object.entries(payload).forEach(([categoryName, data]) => {
+        const canvasId = categoryCanvasMap[categoryName];
+        const canvas = document.getElementById(canvasId);
+
+        if (!canvas) return;
+
+        const months = Object.keys(data.monthly_progress);
+        const monthlyValues = Object.values(data.monthly_progress);
+        const accumulatedValues = Object.values(data.accumulated_monthly_progress);
+
+        // Destruir chart anterior
+        if (categoryCharts[categoryName]) {
+            categoryCharts[categoryName].destroy();
+        }
+
+        // Crear chart
+        const ctx = canvas.getContext('2d');
+        categoryCharts[categoryName] = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: months,
+                datasets: [
+                    {
+                        type: 'line',
+                        label: 'Progreso Acumulado (%)',
+                        data: accumulatedValues,
+                        borderColor: '#4f46e5',
+                        backgroundColor: 'rgba(79, 70, 229, 0.1)',
+                        borderWidth: 2,
+                        tension: 0.3,
+                        pointRadius: 4,
+                        pointBackgroundColor: '#4f46e5',
+                        yAxisID: 'y'
+                    },
+                    {
+                        type: 'bar',
+                        label: 'Mejora Mensual (%)',
+                        data: monthlyValues,
+                        backgroundColor: monthlyValues.map(v => v >= 0 ? 'rgba(34, 197, 94, 0.6)' : 'rgba(239, 68, 68, 0.6)'),
+                        borderColor: monthlyValues.map(v => v >= 0 ? '#16a34a' : '#dc2626'),
+                        borderWidth: 1,
+                        borderRadius: 4,
+                        yAxisID: 'y'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        labels: { color: '#e2e8f0' }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) label += ': ';
+                                if (context.parsed.y !== null) {
+                                    label += context.parsed.y.toFixed(2) + '%';
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: { color: '#94a3b8' },
+                        grid: { display: false }
+                    },
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        ticks: {
+                            color: '#94a3b8',
+                            callback: value => value + '%'
+                        },
+                        grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                    }
+                }
+            }
+        });
+    });
 }

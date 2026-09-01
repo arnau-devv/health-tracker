@@ -135,15 +135,17 @@
                         <div class="general_progress_container">
                             <div class="general_progress_header">
                                 <div class="general_progress_chart_selector">
-                                    <button class="general_progress_chart_selector_btn selected" id="general_progress_chart_selector_btn" data-category="push">PUSH</button>
-                                    <button class="general_progress_chart_selector_btn" id="general_progress_chart_selector_btn" data-category="pull">PULL</button>
-                                    <button class="general_progress_chart_selector_btn" id="general_progress_chart_selector_btn" data-category="push">LEGS</button>
+                                    <button class="general_progress_chart_selector_btn selected" id="push_general_progress_chart_selector_btn" data-category="push">PUSH</button>
+                                    <button class="general_progress_chart_selector_btn" id="pull_general_progress_chart_selector_btn" data-category="pull">PULL</button>
+                                    <button class="general_progress_chart_selector_btn" id="pulegs_general_progress_chart_selector_btn" data-category="legs">LEGS</button>
+                                    <button class="general_progress_chart_selector_btn" id="core_general_progress_chart_selector_btn" data-category="core">CORE</button>
                                 </div>
                             </div>
                             <div class="general_progress_chart_contents">
-                                <canvas class="general_progress_canvas" id="general_progress_chart">1</canvas>
-                                <canvas class="general_progress_canvas" id="general_progress_chart_overlay">2</canvas>
-                                <canvas class="general_progress_canvas" id="general_progress_chart_hover">3</canvas>
+                                <canvas class="general_progress_canvas" id="push_general_progress_chart"></canvas>
+                                <canvas class="general_progress_canvas" id="pull_general_progress_chart"></canvas>
+                                <canvas class="general_progress_canvas" id="legs_general_progress_chart"></canvas>
+                                <canvas class="general_progress_canvas" id="core_general_progress_chart"></canvas>
                             </div>
                         </div>
                     
