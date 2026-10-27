@@ -1,3 +1,9 @@
+"""Prueba manual de inserción y lectura de un entrenamiento en la base de datos.
+
+Ejecutar desde backend/:
+    python -m testing.workout_insert_test
+"""
+
 from sqlalchemy import select
 from infrastructure.database.database import engine, Base, Session, init_db
 from infrastructure.database.models.strength_training import (

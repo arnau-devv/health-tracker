@@ -176,7 +176,34 @@ heatmapContainer.addEventListener('mouseout', (e) => {
     if (cell) heatmapTooltip.classList.remove('visible')
 })
 
+        // # Example of returned dicc:
+        // # {
+        // #     "date": date(2026, 9, 23), "satisfaction": "good", "intensity": "high",
+        // #     "exercises": [
+        // #         {
+        // #             "name": "bench press", "bodyweighted": False,
+        // #             "sets": [
+        // #                 {"set_number": 1, "weight": 45.0, "reps": 12, "reached_failure": False},
+        // #                 {"set_number": 2, "weight": 40.0, "reps": 8, "reached_failure": True},
+        // #             ]
+        // #         },
+        // #         {
+        // #             "name": "pushups", "bodyweighted": True,
+        // #             "sets": [{"set_number": 1, "weight": 18.0, "reps": 15, "reached_failure": False}]
+        // #         }
+        // #     ]
+        // # }
+function loadWorkoutDataView(workout_data) {
+    const workoutData = loadWorkoutDataByDate(cell.dataset.date)
+    const workoutDate = document.getElementById('workout_data_date');
+    const workoutSatifaction = document.getElementById('workout_data_view_satisfaction');
+    workoutDate.textContent = cell.dataset.date;
+    workoutSatifaction.textContent = cell.dataset.satisfaction;
+    console.log(cell.dataset)
+}
 
+function loadWorkoutDataByDate(date) {
+}
 
 // =========================================================================================================================
 //                                              GENERAL PROGROGRESS CHART
@@ -198,52 +225,146 @@ generalProgressChartsButtons.forEach((btn, index) => {
 })
 
 
-new Chart(document.getElementById('general_progress_chart'), {
-  type: 'bar',
-  data: {
-    labels: ['1','2','3','4','5','6','7','8','9','10','11','12',
-            '13','14','15','16','17','18','19','20','21','22','23','24'],            
-    datasets: [{
-        label: 'Progreso',
-        data: [12, 19, 3, 5, 2, 3, 10, 8, 15, 6, 9, 4, 11, 18, 7, 4, 6, 8, 13, 16, 10, 5, 12, 7]
-    }]
-  },
-  options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            interaction: { mode: 'index', intersect: false },
-            plugins: {
-                legend: {
-                    display: false,
-                    position: 'bottom',
-                    labels: {
-                        color: '#7a7a7a',
-                        font: { size: 10 },
-                        boxWidth: 8,
-                        boxHeight: 8,
-                        usePointStyle: true,
+// ============================================================================================
+//                               GENERAL PROGRESS CHARTS (CHART.JS)
+// ============================================================================================
+
+const categoryCharts = {};
+const categoryCanvasMap = {
+    'push': 'push_general_progress_chart',
+    'pull': 'pull_general_progress_chart',
+    'legs': 'legs_general_progress_chart',
+    'core': 'core_general_progress_chart'
+};
+
+const CATEGORY_COLORS = {
+    push: { main: '#e05555', bar_pos: 'rgba(224, 85, 85, 0.5)', bar_neg: 'rgba(85, 140, 224, 0.5)', line: '#e05555' },
+    pull: { main: '#5588e0', bar_pos: 'rgba(85, 136, 224, 0.5)', bar_neg: 'rgba(224, 140, 85, 0.5)', line: '#5588e0' },
+    legs: { main: '#e0a855', bar_pos: 'rgba(224, 168, 85, 0.5)', bar_neg: 'rgba(85, 160, 224, 0.5)', line: '#e0a855' },
+    core: { main: '#a855e0', bar_pos: 'rgba(168, 85, 224, 0.5)', bar_neg: 'rgba(140, 224, 85, 0.5)', line: '#a855e0' },
+}
+
+function onGeneralProgressDataLoaded(payload) {
+    Object.entries(payload).forEach(([categoryName, data]) => {
+        const canvasId = categoryCanvasMap[categoryName]
+        const canvas = document.getElementById(canvasId)
+        if (!canvas) return
+
+        const months = Object.keys(data.monthly_progress)
+        const monthlyValues = Object.values(data.monthly_progress)
+        const accumulatedValues = Object.values(data.accumulated_monthly_progress)
+
+        if (categoryCharts[categoryName]) categoryCharts[categoryName].destroy()
+
+        const colors = CATEGORY_COLORS[categoryName]
+        const ctx = canvas.getContext('2d')
+
+        categoryCharts[categoryName] = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: months,
+                datasets: [
+                    {
+                        type: 'line',
+                        label: 'Accumulated (%)',
+                        data: accumulatedValues,
+                        borderColor: colors.main,
+                        backgroundColor: colors.main + '18',
+                        borderWidth: 1.5,
+                        tension: 0.45,
+                        pointRadius: 0,
+                        pointHoverRadius: 3,
+                        pointBackgroundColor: colors.main,
+                        fill: true,
+                        yAxisID: 'y',
+                        order: 1,
+                    },
+                    {
+                        type: 'bar',
+                        label: 'Monthly (%)',
+                        data: monthlyValues,
+                        backgroundColor: monthlyValues.map(v =>
+                            v >= 0 ? colors.bar_pos : colors.bar_neg
+                        ),
+                        borderColor: 'transparent',
+                        borderWidth: 0,
+                        borderRadius: 2,
+                        borderSkipped: false,
+                        barThickness: 'flex',
+                        maxBarThickness: 16,
+                        yAxisID: 'y',
+                        order: 2,
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: { mode: 'index', intersect: false },
+                layout: { padding: { top: 4, right: 4, bottom: 0, left: 0 } },
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        align: 'end',
+                        labels: {
+                            color: '#5a5a5a',
+                            font: { size: 9, family: 'Poppins' },
+                            boxWidth: 6,
+                            boxHeight: 6,
+                            usePointStyle: true,
+                            pointStyleWidth: 6,
+                            padding: 10,
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: '#141414',
+                        titleColor: '#7a7a7a',
+                        bodyColor: '#bbbbbb',
+                        borderColor: '#292929',
+                        borderWidth: 1,
+                        padding: 8,
+                        cornerRadius: 3,
+                        boxPadding: 4,
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) label += ': ';
+                                if (context.parsed.y !== null) {
+                                    label += context.parsed.y.toFixed(2) + '%';
+                                }
+                                return label;
+                            }
+                        }
+                        // callbacks: {
+                        //     label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y.toFixed(1)}%`
+                        // }
                     }
                 },
-                tooltip: {
-                    backgroundColor: '#181818',
-                    titleColor: '#bbbbbb',
-                    bodyColor: '#bbbbbb',
-                    borderColor: '#292929',
-                    borderWidth: 1,
-                    padding: 8,
-                    boxPadding: 4,
-                }
-            },
-            scales: {
-                x: {
-                    grid: { display: false, drawOnChartArea: false, drawBorder: false },
-                    ticks: { color: '#5a5a5a', font: { size: 9 }, display: false }
-                },
-                y: {
-                    stacked: true,
-                    grid: { display: false, color: 'rgba(255,255,255,0.04)', drawBorder: false },
-                    ticks: { color: '#5a5a5a', font: { size: 9 }, display: false }
+                scales: {
+                    x: {
+                        grid: { display: false },
+                        border: { display: false },
+                        ticks: {
+                            color: '#444444',
+                            font: { size: 9, family: 'Poppins' },
+                            maxRotation: 0,
+                            padding: 4,
+                        }
+                    },
+                    y: {
+                        position: 'left',
+                        grid: { color: 'rgba(255,255,255,0.03)' },
+                        border: { display: false, dash: [3, 3] },
+                        ticks: {
+                            color: '#444444',
+                            font: { size: 9, family: 'Poppins' },
+                            padding: 6,
+                            callback: v => v + '%'
+                        }
+                    }
                 }
             }
-        }
-});
+        })
+    })
+}

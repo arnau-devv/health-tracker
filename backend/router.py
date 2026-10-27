@@ -1,6 +1,7 @@
 from modules.sports.strength_training.handlers import (
     handle_save_exercise, handle_save_workout, 
-    handle_get_strength_training_data, handle_get_heatmap_data, handle_get_general_progress_data
+    handle_get_strength_training_data, handle_get_heatmap_data, 
+    handle_get_general_progress_data, handle_get_workout_data
 )
 
 MESSAGNE_HANDLERS = {
@@ -8,7 +9,8 @@ MESSAGNE_HANDLERS = {
     "save_workout": handle_save_workout,
     "get_strength_training_data": handle_get_strength_training_data,
     "get_heatmap_data": handle_get_heatmap_data,
-    "get_general_progress_data": handle_get_general_progress_data
+    "get_general_progress_data": handle_get_general_progress_data,
+    "get_workout_data": handle_get_workout_data
 }
 
 

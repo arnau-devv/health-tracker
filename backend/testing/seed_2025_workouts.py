@@ -4,11 +4,11 @@ Seed script — genera un año entero (2025) de workouts realistas de fuerza.
 Si la base de datos no tiene ejercicios creados, primero siembra un catálogo
 base (push/pull/legs) para poder generar los workouts sobre él.
 
-Colócalo en la raíz del backend (mismo nivel desde el que corre ws_service.py),
-ya que reutiliza exactamente los mismos import paths.
+Ejecuta el módulo desde la raíz de backend para reutilizar los mismos imports
+que el servidor:
 
 Uso:
-    python seed_2025_workouts.py
+    python -m testing.seed_2025_workouts
 
 Es idempotente: si lo vuelves a correr, borra primero los workouts de 2025
 antes de regenerarlos, así que no se duplican. Los ejercicios base tampoco

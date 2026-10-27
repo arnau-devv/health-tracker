@@ -35,7 +35,7 @@ class StrengthTrainingdataLoader():
         #                           'goblet squat': {'2025-01-04': 20.67, '2025-01-08': 21.87, '2025-01-12': 59.41} }
     
     @staticmethod
-    def compute_category_metrics(exercise_progress: dict[dict], cat) -> dict:
+    def compute_category_metrics(exercise_progress: dict[dict]) -> dict:
         rows: list[dict] = [
             {'exercise': exercise, 'date': date, 'rm': rm}
             for exercise, dates in exercise_progress.items()
@@ -44,7 +44,7 @@ class StrengthTrainingdataLoader():
 
         category_metrics_dataframe = pd.DataFrame(rows)
         category_metrics_dataframe['date'] = pd.to_datetime(category_metrics_dataframe['date'])
-        print(f"---------------- {cat.upper()} --------------------")
+        # print(f"---------------- {cat.upper()} --------------------")
 
         # --- AVERAGE DAILY PROGRESS ---
         days_rms = category_metrics_dataframe.groupby("date")["rm"].mean().sort_index()
@@ -91,7 +91,7 @@ class StrengthTrainingdataLoader():
         #                               'monthly_progress':  {'year-month': value(float), year-month': value(float), year-month': value(float)},
         #                               'accumulated_monthly_progress': {'year-month': value(float), year-month': value(float), year-month': value(float)} }
         return {
-            category: StrengthTrainingdataLoader.compute_category_metrics(exercise_progress, category)
+            category: StrengthTrainingdataLoader.compute_category_metrics(exercise_progress)
             for category, exercise_progress in general_progress.items()
         }
 

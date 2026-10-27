@@ -135,3 +135,14 @@ async def handle_get_general_progress_data(websocket, payload) -> list[dict]:
         "payload": clean_data,
     }))
     
+    
+async def handle_get_workout_data(websocket, payload: str) -> dict:
+    workout_date = payload.get("date")
+    with Session() as session:
+        workout_repo = WorkoutRepository(session)
+        workout_data: dict = workout_repo.get_data_by_date(workout_date)
+    print(f"Workout [{payload}] loaded")
+    await websocket.send(json.dumps({
+        "type": "workout_data_loaded",
+        "payload": workout_data
+    }))

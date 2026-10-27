@@ -1,7 +1,7 @@
 from typing import Optional, Sequence
 from sqlalchemy import select, func
 from datetime import date
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, selectinload
 from infrastructure.database.models.strength_training import (
     WorkoutModel,
     WorkoutExerciseModel,
@@ -147,4 +147,74 @@ class WorkoutRepository:
         #     {"date": "2026-06-10", "exercise_name": "bench press", "set_number": 2, "weight": 42.5, "reps": 10},
         #     {"date": "2026-06-03", "exercise_name": "overhead press", "set_number": 1, "weight": 25.0, "reps": 10},
         # ]
-    
+        
+    def get_data_by_date(self, selected_date: str) -> dict:
+        date_for_query = date.fromisoformat(selected_date)
+        stmt = (
+        select(WorkoutModel)
+        .options(
+            selectinload(WorkoutModel.workout_exercises)
+            .selectinload(WorkoutExerciseModel.sets),
+            selectinload(WorkoutModel.workout_exercises)
+            .selectinload(WorkoutExerciseModel.exercise),
+        )
+        .where(WorkoutModel.date == date_for_query)
+        .order_by(WorkoutModel.created_at.desc())
+        )
+        workout = self.session.scalars(stmt).first()
+
+        exercises_data = []
+
+        ordered_exercises = sorted(
+            workout.workout_exercises,
+            key=lambda workout_exercise: workout_exercise.position
+        )
+
+        for workout_exercise in ordered_exercises:
+            exercise = workout_exercise.exercise
+
+            sets_data = []
+
+            ordered_sets = sorted(
+                workout_exercise.sets,
+                key=lambda workout_set: workout_set.set_number
+            )
+
+            for workout_set in ordered_sets:
+                sets_data.append({
+                    "set_number": workout_set.set_number,
+                    "weight": workout_set.weight,
+                    "reps": workout_set.reps,
+                    "reached_failure": workout_set.reached_failure,
+                })
+
+            exercises_data.append({
+                "name": workout_exercise.exercise_name,
+                "bodyweighted": exercise.bodyweighted,
+                "sets": sets_data,
+            })
+
+        return {
+            "date": selected_date,
+            "satisfaction": workout.satisfaction,
+            "intensity": workout.intensity,
+            "exercises": exercises_data,
+        }
+        
+        # Example of returned dicc:
+        # {
+        #     "date": date(2026, 9, 23), "satisfaction": "good", "intensity": "high",
+        #     "exercises": [
+        #         {
+        #             "name": "bench press", "bodyweighted": False,
+        #             "sets": [
+        #                 {"set_number": 1, "weight": 45.0, "reps": 12, "reached_failure": False},
+        #                 {"set_number": 2, "weight": 40.0, "reps": 8, "reached_failure": True},
+        #             ]
+        #         },
+        #         {
+        #             "name": "pushups", "bodyweighted": True,
+        #             "sets": [{"set_number": 1, "weight": 18.0, "reps": 15, "reached_failure": False}]
+        #         }
+        #     ]
+        # }

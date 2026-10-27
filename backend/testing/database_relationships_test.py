@@ -1,23 +1,7 @@
-"""
-seed_and_test.py
+"""Prueba de inserción y relaciones entre ejercicios y entrenamientos.
 
-Qué hace:
-1. Vacía TODA la base de datos (en orden correcto respetando las FKs).
-2. Genera 1 año de entrenamientos realistas (push/pull/legs/core) e inserta
-   los datos usando los modelos SQLAlchemy directamente.
-3. Para cada categoría: lee los datos con el MISMO repositorio que usa tu
-   backend (workout_repo.get_data_by_category), y calcula el
-   average_daily_progress "a mano", en Python puro (sin pandas, sin tu clase),
-   como referencia independiente ("ground truth").
-4. Corre tu pipeline real (load_progress -> compute_category_metrics) sobre
-   esos mismos datos, para que compares el print() de tu función contra el
-   valor esperado calculado en el paso 3.
-
-⚠️ AJUSTA LOS IMPORTS de las 2 primeras líneas si tus rutas reales difieren
-   (nombre del módulo donde vive StrengthTrainingdataLoader, etc.)
-
-Ejecutar desde la raíz del proyecto:
-    python seed_and_test.py
+Ejecutar desde backend/:
+    python -m testing.database_relationships_test
 """
 
 import random

@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="components/sports/strength_training/main_subview/overview/overview.css">
     <link rel="stylesheet" href="components/sports/strength_training/routine_creator/routine_creator.css">
     <link rel="stylesheet" href="components/sports/strength_training/exercise_creator/exercise_creator.css">
+    <link rel="stylesheet" href="components/sports/strength_training/main_subview/overview/workout_data_view.css">
     <link rel="stylesheet" href="components/sports/strength_training/main_subview/strength_training_main_subview.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
@@ -131,24 +132,27 @@
                             </div>
                         </div>
                         
-                        <!--- GENERAL PROGRESS CHART -->
-                        <div class="general_progress_container">
-                            <div class="general_progress_header">
-                                <div class="general_progress_chart_selector">
-                                    <button class="general_progress_chart_selector_btn selected" id="push_general_progress_chart_selector_btn" data-category="push">PUSH</button>
-                                    <button class="general_progress_chart_selector_btn" id="pull_general_progress_chart_selector_btn" data-category="pull">PULL</button>
-                                    <button class="general_progress_chart_selector_btn" id="pulegs_general_progress_chart_selector_btn" data-category="legs">LEGS</button>
-                                    <button class="general_progress_chart_selector_btn" id="core_general_progress_chart_selector_btn" data-category="core">CORE</button>
+                        <div class="st_main_subview_gird_helper_container">
+                            <!--- GENERAL PROGRESS CHART -->
+                            <div class="general_progress_container">
+                                <div class="general_progress_header">
+                                    <div class="general_progress_chart_selector">
+                                        <button class="general_progress_chart_selector_btn selected" id="push_general_progress_chart_selector_btn" data-category="push">PUSH</button>
+                                        <button class="general_progress_chart_selector_btn" id="pull_general_progress_chart_selector_btn" data-category="pull">PULL</button>
+                                        <button class="general_progress_chart_selector_btn" id="pulegs_general_progress_chart_selector_btn" data-category="legs">LEGS</button>
+                                        <button class="general_progress_chart_selector_btn" id="core_general_progress_chart_selector_btn" data-category="core">CORE</button>
+                                    </div>
+                                </div>
+                                <div class="general_progress_chart_contents">
+                                    <canvas class="general_progress_canvas" id="push_general_progress_chart"></canvas>
+                                    <canvas class="general_progress_canvas" id="pull_general_progress_chart"></canvas>
+                                    <canvas class="general_progress_canvas" id="legs_general_progress_chart"></canvas>
+                                    <canvas class="general_progress_canvas" id="core_general_progress_chart"></canvas>
                                 </div>
                             </div>
-                            <div class="general_progress_chart_contents">
-                                <canvas class="general_progress_canvas" id="push_general_progress_chart"></canvas>
-                                <canvas class="general_progress_canvas" id="pull_general_progress_chart"></canvas>
-                                <canvas class="general_progress_canvas" id="legs_general_progress_chart"></canvas>
-                                <canvas class="general_progress_canvas" id="core_general_progress_chart"></canvas>
-                            </div>
+
+                            <div class="x"></div>
                         </div>
-                    
                     </div>
                     
                     <!-- MEW WORKOUT VIEW -->
@@ -681,7 +685,19 @@
         <button id="save_exercise_btn">Save Exercise</button>
     </div>
 
-    <div class="lateral_window_helper routine_creator_view" id="routine_creator_view">routine creator</div>
+    <!-- <div class="lateral_window_helper routine_creator_view" id="routine_creator_view">routine creator</div> -->
+    <div class="lateral_window_helper workout_data_view" id="workout_data_view">
+        <div class="workout_data_view_header" id="workout_data_view_header">
+            <p class="workout_data_date_tittle" id="workout_data_date_tittle">Date</p>
+            <p class="workout_data_date" id="workout_data_date"></p>
+        </div>
+        <div class="workout_data_view_content" id="workout_data_view_content">
+            <div class="workout_data_view_satisfaction_label">
+                <p class="workout_data_view_satisfaction_tittle" id="workout_data_view_satisfaction_tittle">Satisfaction: </p>
+                <p class="workout_data_view_satisfaction" id="workout_data_view_satisfaction"></p>
+            </div>
+        </div>
+    </div>
 
     <!-- TOAST POPUP -->
     <div class="toast_popup" id="toast_popup"></div>
@@ -691,9 +707,9 @@
     <script src="vendor/flatpickr/flatpickr.min.js"></script>
     <script src="vendor/chartjs/chart.umd.js"></script>
     <script src="components/shared/date_picker/date_picker.js"></script>
+    <script src="components/sports/strength_training/main_subview/overview/overview.js"></script>
     <script src="components/sports/strength_training/strength_training.js"></script>
     <script src="components/sports/strength_training/add_workout/add_workout.js"></script>
-    <script src="components/sports/strength_training/main_subview/overview/overview.js"></script>
     <script src="components/sports/strength_training/routine_creator/routine_creator.js"></script>
     <script src="components/sports/strength_training/exercise_creator/exercise_creator.js"></script>
     <script src="components/sports/strength_training/main_subview/strength_training_main_subview.js"></script>

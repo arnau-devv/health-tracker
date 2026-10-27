@@ -96,4 +96,20 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 dist/
-build/
+**/build/
+
+# ==========================================
+# GRADLE & ANDROID
+# Local Gradle state, SDK paths, and build artifacts
+# ==========================================
+.gradle/
+.kotlin/
+.settings/
+local.properties
+.cxx/
+.externalNativeBuild/
+captures/
+*.apk
+*.aab
+*.jks
+*.keystore
